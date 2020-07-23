@@ -1,4 +1,6 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartx/dartx.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,35 +15,36 @@ part 'riverfire.g.dart';
 
 T identity<T>(T item) => item;
 Query defaultQuery(CollectionReference ref) => ref.limit(10);
-FutureProvider<FirebaseApp> createRiverFireApp(Future<FirebaseApp> app) =>
-    FutureProvider<FirebaseApp>((_) => app);
+Provider<GoogleSignIn> createGoogleSignIn(GoogleSignIn signIn) =>
+    Provider((ref) => signIn);
+Provider<FirebaseApp> createRiverFireApp(FirebaseApp app) =>
+    Provider<FirebaseApp>((_) => app);
 
-FutureProvider<RiverFireConfig> createRiverFireConfig(
-        FutureProvider<FirebaseApp> app,
+Provider<RiverFireConfig> createRiverFireConfig(Provider<FirebaseApp> app,
         {bool persistWeb = true}) =>
-    FutureProvider<RiverFireConfig>((ref) async => RiverFireConfig(
+    Provider<RiverFireConfig>((ref) => RiverFireConfig(
           ref,
-          await ref.read(app).future,
+          ref.read(app),
           persistWeb: persistWeb,
         ));
 
-FutureProvider<RiverFireAuth> createRiverFireAuth(
-        FutureProvider<FirebaseApp> app) =>
-    FutureProvider<RiverFireAuth>(
-        (ref) async => RiverFireAuth(ref, await ref.read(app).future));
+Provider<RiverFireAuth> createRiverFireAuth(
+        Provider<FirebaseApp> app, Provider<GoogleSignIn> signIn) =>
+    Provider<RiverFireAuth>(
+        (ref) => RiverFireAuth(ref, ref.read(app), ref.read(signIn)));
 
-FutureProvider<RiverFirestoreService<T>>
+Provider<RiverFirestoreService<T>>
     createRiverFirestoreService<T extends FirestoreDoc>(
-  FutureProvider<RiverFireConfig> config, {
-  @required CollectionReference Function(Firestore) getCollection,
+  Provider<RiverFireConfig> config, {
+  @required CollectionReference Function(FirebaseFirestore) getCollection,
   @required T Function(DocumentSnapshot) fromFirestore,
   Query Function(CollectionReference) getQuery,
   T Function(T) toFirestore,
 }) =>
-        FutureProvider<RiverFirestoreService<T>>(
-          (ref) async => RiverFirestoreService(
+        Provider<RiverFirestoreService<T>>(
+          (ref) => RiverFirestoreService(
             ref,
-            await ref.read(config).future,
+            ref.read(config),
             getCollection,
             getQuery,
             fromFirestore,
@@ -58,18 +61,18 @@ class RiverFirestoreService<T extends FirestoreDoc> {
         assert(_getCollection != null);
   final ProviderReference ref;
   final RiverFireConfig config;
-  final CollectionReference Function(Firestore) _getCollection;
+  final CollectionReference Function(FirebaseFirestore) _getCollection;
   final Query Function(CollectionReference) _getQuery;
   final T Function(DocumentSnapshot) _fromFirestore;
   final T Function(T) _toFirestore;
-  final Firestore _firestore;
+  final FirebaseFirestore _firestore;
 
   Stream<Either<FirestoreFailure, KtList<T>>> watchAll() async* {
     yield* _getQuery(_getCollection(_firestore))
         .snapshots()
         .map(
           (snapshot) => right<FirestoreFailure, KtList<T>>(
-            snapshot.documents.map(_fromFirestore).toImmutableList(),
+            snapshot.docs.map(_fromFirestore).toImmutableList(),
           ),
         )
         .onErrorReturnWith((e) {
@@ -85,8 +88,8 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   Future<Either<FirestoreFailure, Unit>> create(T doc) async {
     try {
       await _getCollection(_firestore)
-          .document(doc.id)
-          .setData(_toFirestore(doc).toJson());
+          .doc(doc.id)
+          .set(_toFirestore(doc).toJson());
 
       return right(unit);
     } on PlatformException catch (e) {
@@ -101,8 +104,8 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   Future<Either<FirestoreFailure, Unit>> update(T doc) async {
     try {
       await _getCollection(_firestore)
-          .document(doc.id)
-          .updateData(_toFirestore(doc).toJson());
+          .doc(doc.id)
+          .update(_toFirestore(doc).toJson());
 
       return right(unit);
     } on PlatformException catch (e) {
@@ -118,7 +121,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
 
   Future<Either<FirestoreFailure, Unit>> delete(T doc) async {
     try {
-      await _getCollection(_firestore).document(doc.id).delete();
+      await _getCollection(_firestore).doc(doc.id).delete();
 
       return right(unit);
     } on PlatformException catch (e) {
@@ -135,22 +138,57 @@ class RiverFirestoreService<T extends FirestoreDoc> {
 
 class RiverFireConfig {
   RiverFireConfig(this.ref, this.app, {bool persistWeb = true}) {
-    firestore = Firestore(app: app)..settings(persistenceEnabled: persistWeb);
+    firestore = FirebaseFirestore.instanceFor(app: app);
   }
   final FirebaseApp app;
-  Firestore firestore;
+  FirebaseFirestore firestore;
   FirebaseApp get firebaseApp => app;
   final ProviderReference ref;
 }
 
 class RiverFireAuth {
-  RiverFireAuth(this.ref, this.app) {
-    _auth = FirebaseAuth.fromApp(app);
+  RiverFireAuth(this.ref, this.app, this.signInWithGoogle) {
+    _auth = FirebaseAuth.instance;
   }
   final ProviderReference ref;
   final FirebaseApp app;
+  final GoogleSignIn signInWithGoogle;
   FirebaseAuth _auth;
   FirebaseAuth get auth => _auth;
+  FirebaseUser user;
+  Future<FirebaseUser> signIn() async {
+    print('Signing in');
+    try {
+      final googleUser = await signInWithGoogle.signInSilently();
+      final googleAuth = await googleUser.authentication;
+
+      user = (await auth.signInWithGoogle(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      ));
+      print('signed in ${user.displayName} silently');
+      return user;
+    } on Exception catch (e, st) {
+      print(e);
+      print(st);
+    }
+    try {
+      final googleUser = await signInWithGoogle.signIn();
+      final googleAuth = await googleUser.authentication;
+      user = (await auth.signInWithGoogle(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      ));
+      print('signed in ${user.displayName}');
+    } on Exception catch (e, st) {
+      print(e);
+      print(st);
+    }
+    Future.delayed(1000.milliseconds, () {
+      print(user);
+    });
+    return user;
+  }
 }
 
 @freezed

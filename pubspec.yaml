@@ -15,7 +15,7 @@ dependencies:
   dartx: any
   dartz: any
   kt_dart: any
-  cloud_firestore: any
+  cloud_firestore: ^0.14.0-dev.1
   freezed_annotation: any
   json_annotation: any
   firebase_core: any

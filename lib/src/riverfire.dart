@@ -21,11 +21,11 @@ Provider<FirebaseApp> createRiverFireApp(FirebaseApp app) =>
     Provider<FirebaseApp>((_) => app);
 
 Provider<RiverFireConfig> createRiverFireConfig(Provider<FirebaseApp> app,
-        {bool persistWeb = true}) =>
+        {bool persist = true}) =>
     Provider<RiverFireConfig>((ref) => RiverFireConfig(
           ref,
           ref.read(app),
-          persistWeb: persistWeb,
+          persist: persist,
         ));
 
 Provider<RiverFireAuth> createRiverFireAuth(
@@ -137,8 +137,9 @@ class RiverFirestoreService<T extends FirestoreDoc> {
 }
 
 class RiverFireConfig {
-  RiverFireConfig(this.ref, this.app, {bool persistWeb = true}) {
+  RiverFireConfig(this.ref, this.app, {bool persist = true}) {
     firestore = FirebaseFirestore.instanceFor(app: app);
+    firestore.settings = Settings(persistenceEnabled: persist);
   }
   final FirebaseApp app;
   FirebaseFirestore firestore;

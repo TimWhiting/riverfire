@@ -157,6 +157,20 @@ class RiverFireAuth {
   FirebaseAuth _auth;
   FirebaseAuth get auth => _auth;
   FirebaseUser user;
+
+  Future<FirebaseUser> signInAnonymously() async {
+    print('Signing in anonymously');
+    try {
+      user = await auth.signInAnonymously();
+      print('signed in ${user.displayName} silently');
+      return user;
+    } on Exception catch (e, st) {
+      print(e);
+      print(st);
+    }
+    return user;
+  }
+
   Future<FirebaseUser> signIn() async {
     print('Signing in');
     try {

@@ -157,6 +157,7 @@ class RiverFireAuth {
   FirebaseAuth _auth;
   FirebaseAuth get auth => _auth;
   FirebaseUser user;
+  Stream<FirebaseUser> get authState => auth.onAuthStateChanged;
 
   Future<FirebaseUser> signInAnonymously() async {
     print('Signing in anonymously');
@@ -203,6 +204,10 @@ class RiverFireAuth {
       print(user);
     });
     return user;
+  }
+
+  Future<void> signOut() async {
+    auth.signOut();
   }
 }
 

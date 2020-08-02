@@ -162,7 +162,8 @@ class RiverFireAuth {
   Future<FirebaseUser> signInAnonymously() async {
     print('Signing in anonymously');
     try {
-      user = await auth.signInAnonymously();
+      final authResult = await auth.signInAnonymously();
+      user = authResult.user;
       print('signed in ${user.displayName} silently');
       return user;
     } on Exception catch (e, st) {
@@ -176,30 +177,36 @@ class RiverFireAuth {
     print('Signing in');
     try {
       final googleUser = await signInWithGoogle.signInSilently();
-      final googleAuth = await googleUser.authentication;
+      if (googleUser == null) {
+        try {
+          final googleUser = await signInWithGoogle.signIn();
+          final googleAuth = await googleUser.authentication;
+          final googleCredential = GoogleAuthProvider.getCredential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          user = (await auth.signInWithCredential(googleCredential)).user;
+          print('signed in ${user.displayName}');
+          return user;
+        } on Exception catch (e, st) {
+          print(e);
+          print(st);
+        }
+      } else {
+        final googleAuth = await googleUser.authentication;
+        final googleCredential = GoogleAuthProvider.getCredential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        user = (await auth.signInWithCredential(googleCredential)).user;
+        print('signed in ${user.displayName} silently');
+        return user;
+      }
+    } on Exception catch (e, st) {
+      print(e);
+      print(st);
+    }
 
-      user = (await auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      ));
-      print('signed in ${user.displayName} silently');
-      return user;
-    } on Exception catch (e, st) {
-      print(e);
-      print(st);
-    }
-    try {
-      final googleUser = await signInWithGoogle.signIn();
-      final googleAuth = await googleUser.authentication;
-      user = (await auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      ));
-      print('signed in ${user.displayName}');
-    } on Exception catch (e, st) {
-      print(e);
-      print(st);
-    }
     Future.delayed(1000.milliseconds, () {
       print(user);
     });

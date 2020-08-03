@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'riverfire.dart';
+part of 'collection.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -25,14 +25,17 @@ FirestoreFailure _$FirestoreFailureFromJson(Map<String, dynamic> json) {
 class _$FirestoreFailureTearOff {
   const _$FirestoreFailureTearOff();
 
+// ignore: unused_element
   _FirestoreFailureInsufficientPermissions insufficientPermissions() {
     return _FirestoreFailureInsufficientPermissions();
   }
 
+// ignore: unused_element
   _FirestoreFailureUnableToUpdate unableToUpdate() {
     return _FirestoreFailureUnableToUpdate();
   }
 
+// ignore: unused_element
   _FirestoreFailureUnexpected unexpected() {
     return _FirestoreFailureUnexpected();
   }

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'riverfire.dart';
+part of 'collection.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -1,22 +1,5 @@
-A library for Dart developers.
+A service for firebase using riverpod for dependency injection.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+As long as you are using riverpod providers, this will help in accessing firebase, including generic helpers for accessing and watching collections.
 
-## Usage
-
-A simple usage example:
-
-```dart
-import 'package:riverfire/riverfire.dart';
-
-main() {
-  var awesome = new Awesome();
-}
-```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+Used in personal projects. I'm not supporting or guaranteeing this library for anyone else.

@@ -79,6 +79,6 @@ class RiverFireAuth {
   }
 
   Future<void> signOut() async {
-    auth.signOut();
+    await auth.signOut();
   }
 }

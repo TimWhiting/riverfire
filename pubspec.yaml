@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   riverpod: any
-  firebase_auth: ^0.17.0
+  firebase_auth: 0.17.0-dev.1
   google_sign_in: any
   dartx: any
   dartz: any
@@ -30,16 +30,6 @@ dev_dependencies:
   derry: any
   abide: any
   json_serializable_immutable_collections: any
-
-dependency_overrides:
-  firebase_auth:
-    git:
-      url: https://github.com/FirebaseExtended/flutterfire
-      path: packages/firebase_auth/firebase_auth/
-  firebase_auth_web:
-    git:
-      url: https://github.com/FirebaseExtended/flutterfire
-      path: packages/firebase_auth/firebase_auth_web/
 
 scripts:
   gen: flutter packages run build_runner build --delete-conflicting-outputs

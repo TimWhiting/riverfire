@@ -65,6 +65,43 @@ class RiverFirestoreService<T extends FirestoreDoc> {
     });
   }
 
+  Future<Either<FirestoreFailure, bool>> exists(T doc) async {
+    try {
+      final fDoc = await _getCollection(_firestore).doc(doc.id).get();
+      if (fDoc.exists) {
+        return right(true);
+      } else {
+        return right(false);
+      }
+    } on PlatformException catch (e) {
+      if (e.message.contains('PERMISSION_DENIED')) {
+        return left(FirestoreFailure.insufficientPermissions());
+      } else {
+        // log.error(e.toString());
+        return left(FirestoreFailure.unexpected());
+      }
+    }
+  }
+
+  Stream<Either<FirestoreFailure, T>> watch(T doc) async* {
+    yield* _getCollection(_firestore)
+        .doc(doc.id)
+        .snapshots()
+        .map(
+          (snapshot) => right<FirestoreFailure, T>(
+            _fromFirestore(snapshot),
+          ),
+        )
+        .onErrorReturnWith((e) {
+      if (e is PlatformException && e.message.contains('PERMISSION_DENIED')) {
+        return left(FirestoreFailure.insufficientPermissions());
+      } else {
+        // log.error(e.toString());
+        return left(FirestoreFailure.unexpected());
+      }
+    });
+  }
+
   Future<Either<FirestoreFailure, Unit>> create(T doc) async {
     try {
       await _getCollection(_firestore)

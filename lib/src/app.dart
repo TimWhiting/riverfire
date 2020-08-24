@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:riverpod/riverpod.dart';
 
-Provider<FirebaseApp> createRiverFireApp(FirebaseApp app) =>
-    Provider<FirebaseApp>((_) => app);
+FutureProvider<FirebaseApp> createRiverFireApp(Future<FirebaseApp> app) =>
+    FutureProvider<FirebaseApp>((_) => app);
 
-Provider<RiverFireConfig> createRiverFireConfig(Provider<FirebaseApp> app,
+FutureProvider<RiverFireConfig> createRiverFireConfig(
+        FutureProvider<FirebaseApp> app,
         {bool persist = true}) =>
-    Provider<RiverFireConfig>((ref) => RiverFireConfig(
+    FutureProvider<RiverFireConfig>((ref) async => RiverFireConfig(
           ref,
-          ref.read(app),
+          await ref.read(app.future),
           persist: persist,
         ));
 

@@ -13,18 +13,18 @@ part 'collection.g.dart';
 T identity<T>(T item) => item;
 Query defaultQuery(CollectionReference ref) => ref.limit(20);
 
-Provider<RiverFirestoreService<T>>
+FutureProvider<RiverFirestoreService<T>>
     createRiverFirestoreService<T extends FirestoreDoc>(
-  Provider<RiverFireConfig> config, {
+  FutureProvider<RiverFireConfig> config, {
   @required CollectionReference Function(FirebaseFirestore) getCollection,
   @required T Function(DocumentSnapshot) fromFirestore,
   Query Function(CollectionReference) getQuery,
   T Function(T) toFirestore,
 }) =>
-        Provider<RiverFirestoreService<T>>(
-          (ref) => RiverFirestoreService(
-            ref,
-            ref.read(config),
+        FutureProvider<RiverFirestoreService<T>>(
+          (ref) async => RiverFirestoreService(
+            ref.read,
+            await ref.read(config.future),
             getCollection,
             getQuery,
             fromFirestore,
@@ -33,13 +33,13 @@ Provider<RiverFirestoreService<T>>
         );
 
 class RiverFirestoreService<T extends FirestoreDoc> {
-  RiverFirestoreService(this.ref, this.config, this._getCollection,
+  RiverFirestoreService(this.read, this.config, this._getCollection,
       this._getQuery, this._fromFirestore, T Function(T) toFirestore)
       : _toFirestore = toFirestore ?? identity,
         _firestore = config.firestore,
         assert(_fromFirestore != null),
         assert(_getCollection != null);
-  final ProviderReference ref;
+  final Reader read;
   final RiverFireConfig config;
   final CollectionReference Function(FirebaseFirestore) _getCollection;
   final Query Function(CollectionReference) _getQuery;

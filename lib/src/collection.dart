@@ -56,7 +56,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is PlatformException && e.message.contains('PERMISSION_DENIED')) {
+      if (e is FirebaseException && e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
@@ -73,7 +73,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       } else {
         return right(false);
       }
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
@@ -93,7 +93,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is PlatformException && e.message.contains('PERMISSION_DENIED')) {
+      if (e is FirebaseException && e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
@@ -109,7 +109,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           .set(_toFirestore(doc).toJson());
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
@@ -125,7 +125,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           .update(_toFirestore(doc).toJson());
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else if (e.message.contains('NOT_FOUND')) {
@@ -141,7 +141,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       await _getCollection(_firestore).doc(doc.id).delete();
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else if (e.message.contains('NOT_FOUND')) {

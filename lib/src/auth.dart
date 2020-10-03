@@ -11,7 +11,7 @@ FutureProvider<RiverFireAuth> createRiverFireAuth(
         FutureProvider<FirebaseApp> app, Provider<GoogleSignIn> signIn) =>
     FutureProvider<RiverFireAuth>((ref) async {
       final _app = await ref.read(app.future);
-      final auth = FirebaseAuth.fromApp(_app);
+      final auth = FirebaseAuth.instanceFor(app: _app);
       return RiverFireAuth(ref.read, auth, _app, ref.read(signIn));
     });
 
@@ -22,10 +22,10 @@ class RiverFireAuth {
   final GoogleSignIn signInWithGoogle;
   final FirebaseAuth _auth;
   FirebaseAuth get auth => _auth;
-  FirebaseUser user;
-  Stream<FirebaseUser> get authState => auth.onAuthStateChanged;
+  User user;
+  Stream<User> get authState => auth.authStateChanges();
 
-  Future<FirebaseUser> signInAnonymously() async {
+  Future<User> signInAnonymously() async {
     print('Signing in anonymously');
     try {
       final authResult = await auth.signInAnonymously();
@@ -39,7 +39,7 @@ class RiverFireAuth {
     return user;
   }
 
-  Future<FirebaseUser> signIn() async {
+  Future<User> signIn() async {
     print('Signing in');
     try {
       final googleUser = await signInWithGoogle.signInSilently();
@@ -47,7 +47,7 @@ class RiverFireAuth {
         try {
           final googleUser = await signInWithGoogle.signIn();
           final googleAuth = await googleUser.authentication;
-          final googleCredential = GoogleAuthProvider.getCredential(
+          final googleCredential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
@@ -60,7 +60,7 @@ class RiverFireAuth {
         }
       } else {
         final googleAuth = await googleUser.authentication;
-        final googleCredential = GoogleAuthProvider.getCredential(
+        final googleCredential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );

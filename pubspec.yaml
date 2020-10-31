@@ -7,27 +7,27 @@ environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
-  riverpod: any
-  firebase_auth: any
-  google_sign_in: any
+  cloud_firestore: any
   dartx: any
   dartz: any
-  kt_dart: any
-  cloud_firestore: any
-  freezed_annotation: any
-  json_annotation: any
+  firebase_auth: any
   firebase_core: any
+  flutter:
+    sdk: flutter
+  freezed_annotation: any
+  google_sign_in: any
+  json_annotation: any
+  kt_dart: any
+  riverpod: any
   rxdart: any
 
 dev_dependencies:
-  test: any
-  build_runner: any
-  freezed: any
-  derry: any
   abide: any
+  build_runner: any
+  derry: any
+  freezed: any
   json_serializable_immutable_collections: any
+  test: any
 
 scripts:
   gen: flutter packages run build_runner build --delete-conflicting-outputs

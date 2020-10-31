@@ -7,7 +7,7 @@ environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
-  cloud_firestore: any
+  cloud_firestore: 0.14.2
   dartx: any
   dartz: any
   firebase_auth: any

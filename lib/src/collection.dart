@@ -101,6 +101,25 @@ class RiverFirestoreService<T extends FirestoreDoc> {
     });
   }
 
+  Stream<Either<FirestoreFailure, T>> watchById(String docId) async* {
+    yield* _getCollection(_firestore)
+        .doc(docId)
+        .snapshots()
+        .map(
+          (snapshot) => right<FirestoreFailure, T>(
+            _fromFirestore(snapshot),
+          ),
+        )
+        .onErrorReturnWith((e) {
+      if (e is FirebaseException && e.message.contains('PERMISSION_DENIED')) {
+        return left(FirestoreFailure.insufficientPermissions());
+      } else {
+        // log.error(e.toString());
+        return left(FirestoreFailure.unexpected());
+      }
+    });
+  }
+
   Future<Either<FirestoreFailure, Unit>> create(T doc) async {
     try {
       await _getCollection(_firestore)
@@ -173,4 +192,26 @@ abstract class FirestoreFailure with _$FirestoreFailure {
 abstract class FirestoreDoc {
   String get id;
   Map<String, dynamic> toJson();
+}
+
+class RiverFirestoreDocWatcher<T extends FirestoreDoc>
+    extends StateNotifier<T> {
+  RiverFirestoreDocWatcher({this.service, this.docId}) : super(null) {
+    service.watchById(docId).listen((d) => state = d.getOrElse(() => null));
+  }
+
+  final RiverFirestoreService<T> service;
+  final String docId;
+
+  T get current => state;
+  void update(T Function(T) updateFunction, {bool updateIfNull = false}) {
+    if (state != null || updateIfNull) {
+      service.update(updateFunction(state));
+    }
+  }
+}
+
+extension DocWatcher<T extends FirestoreDoc> on RiverFirestoreService<T> {
+  RiverFirestoreDocWatcher<T> docWatcher(String id) =>
+      RiverFirestoreDocWatcher<T>(service: this, docId: id);
 }

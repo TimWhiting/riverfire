@@ -16,12 +16,15 @@ FirestoreFailure _$FirestoreFailureFromJson(Map<String, dynamic> json) {
       return _FirestoreFailureUnableToUpdate.fromJson(json);
     case 'unexpected':
       return _FirestoreFailureUnexpected.fromJson(json);
+    case 'uninitialized':
+      return _FirestoreFailureUninitialized.fromJson(json);
 
     default:
       throw FallThroughError();
   }
 }
 
+/// @nodoc
 class _$FirestoreFailureTearOff {
   const _$FirestoreFailureTearOff();
 
@@ -39,23 +42,37 @@ class _$FirestoreFailureTearOff {
   _FirestoreFailureUnexpected unexpected() {
     return _FirestoreFailureUnexpected();
   }
+
+// ignore: unused_element
+  _FirestoreFailureUninitialized uninitialized() {
+    return _FirestoreFailureUninitialized();
+  }
+
+// ignore: unused_element
+  FirestoreFailure fromJson(Map<String, Object> json) {
+    return FirestoreFailure.fromJson(json);
+  }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $FirestoreFailure = _$FirestoreFailureTearOff();
 
+/// @nodoc
 mixin _$FirestoreFailure {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
     @required Result unexpected(),
+    @required Result uninitialized(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
     Result unexpected(),
+    Result uninitialized(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -65,6 +82,7 @@ mixin _$FirestoreFailure {
             _FirestoreFailureInsufficientPermissions value),
     @required Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     @required Result unexpected(_FirestoreFailureUnexpected value),
+    @required Result uninitialized(_FirestoreFailureUninitialized value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -72,17 +90,20 @@ mixin _$FirestoreFailure {
         _FirestoreFailureInsufficientPermissions value),
     Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     Result unexpected(_FirestoreFailureUnexpected value),
+    Result uninitialized(_FirestoreFailureUninitialized value),
     @required Result orElse(),
   });
   Map<String, dynamic> toJson();
 }
 
+/// @nodoc
 abstract class $FirestoreFailureCopyWith<$Res> {
   factory $FirestoreFailureCopyWith(
           FirestoreFailure value, $Res Function(FirestoreFailure) then) =
       _$FirestoreFailureCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$FirestoreFailureCopyWithImpl<$Res>
     implements $FirestoreFailureCopyWith<$Res> {
   _$FirestoreFailureCopyWithImpl(this._value, this._then);
@@ -92,6 +113,7 @@ class _$FirestoreFailureCopyWithImpl<$Res>
   final $Res Function(FirestoreFailure) _then;
 }
 
+/// @nodoc
 abstract class _$FirestoreFailureInsufficientPermissionsCopyWith<$Res> {
   factory _$FirestoreFailureInsufficientPermissionsCopyWith(
           _FirestoreFailureInsufficientPermissions value,
@@ -99,6 +121,7 @@ abstract class _$FirestoreFailureInsufficientPermissionsCopyWith<$Res> {
       __$FirestoreFailureInsufficientPermissionsCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class __$FirestoreFailureInsufficientPermissionsCopyWithImpl<$Res>
     extends _$FirestoreFailureCopyWithImpl<$Res>
     implements _$FirestoreFailureInsufficientPermissionsCopyWith<$Res> {
@@ -114,6 +137,8 @@ class __$FirestoreFailureInsufficientPermissionsCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
+
+/// @nodoc
 class _$_FirestoreFailureInsufficientPermissions
     implements _FirestoreFailureInsufficientPermissions {
   _$_FirestoreFailureInsufficientPermissions();
@@ -179,10 +204,12 @@ class _$_FirestoreFailureInsufficientPermissions
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
     @required Result unexpected(),
+    @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return insufficientPermissions();
   }
 
@@ -192,6 +219,7 @@ class _$_FirestoreFailureInsufficientPermissions
     Result insufficientPermissions(),
     Result unableToUpdate(),
     Result unexpected(),
+    Result uninitialized(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -209,10 +237,12 @@ class _$_FirestoreFailureInsufficientPermissions
             _FirestoreFailureInsufficientPermissions value),
     @required Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     @required Result unexpected(_FirestoreFailureUnexpected value),
+    @required Result uninitialized(_FirestoreFailureUninitialized value),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return insufficientPermissions(this);
   }
 
@@ -223,6 +253,7 @@ class _$_FirestoreFailureInsufficientPermissions
         _FirestoreFailureInsufficientPermissions value),
     Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     Result unexpected(_FirestoreFailureUnexpected value),
+    Result uninitialized(_FirestoreFailureUninitialized value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -249,6 +280,7 @@ abstract class _FirestoreFailureInsufficientPermissions
       _$_FirestoreFailureInsufficientPermissions.fromJson;
 }
 
+/// @nodoc
 abstract class _$FirestoreFailureUnableToUpdateCopyWith<$Res> {
   factory _$FirestoreFailureUnableToUpdateCopyWith(
           _FirestoreFailureUnableToUpdate value,
@@ -256,6 +288,7 @@ abstract class _$FirestoreFailureUnableToUpdateCopyWith<$Res> {
       __$FirestoreFailureUnableToUpdateCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class __$FirestoreFailureUnableToUpdateCopyWithImpl<$Res>
     extends _$FirestoreFailureCopyWithImpl<$Res>
     implements _$FirestoreFailureUnableToUpdateCopyWith<$Res> {
@@ -270,6 +303,8 @@ class __$FirestoreFailureUnableToUpdateCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
+
+/// @nodoc
 class _$_FirestoreFailureUnableToUpdate
     implements _FirestoreFailureUnableToUpdate {
   _$_FirestoreFailureUnableToUpdate();
@@ -334,10 +369,12 @@ class _$_FirestoreFailureUnableToUpdate
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
     @required Result unexpected(),
+    @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return unableToUpdate();
   }
 
@@ -347,6 +384,7 @@ class _$_FirestoreFailureUnableToUpdate
     Result insufficientPermissions(),
     Result unableToUpdate(),
     Result unexpected(),
+    Result uninitialized(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -364,10 +402,12 @@ class _$_FirestoreFailureUnableToUpdate
             _FirestoreFailureInsufficientPermissions value),
     @required Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     @required Result unexpected(_FirestoreFailureUnexpected value),
+    @required Result uninitialized(_FirestoreFailureUninitialized value),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return unableToUpdate(this);
   }
 
@@ -378,6 +418,7 @@ class _$_FirestoreFailureUnableToUpdate
         _FirestoreFailureInsufficientPermissions value),
     Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     Result unexpected(_FirestoreFailureUnexpected value),
+    Result uninitialized(_FirestoreFailureUninitialized value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -401,6 +442,7 @@ abstract class _FirestoreFailureUnableToUpdate implements FirestoreFailure {
       _$_FirestoreFailureUnableToUpdate.fromJson;
 }
 
+/// @nodoc
 abstract class _$FirestoreFailureUnexpectedCopyWith<$Res> {
   factory _$FirestoreFailureUnexpectedCopyWith(
           _FirestoreFailureUnexpected value,
@@ -408,6 +450,7 @@ abstract class _$FirestoreFailureUnexpectedCopyWith<$Res> {
       __$FirestoreFailureUnexpectedCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class __$FirestoreFailureUnexpectedCopyWithImpl<$Res>
     extends _$FirestoreFailureCopyWithImpl<$Res>
     implements _$FirestoreFailureUnexpectedCopyWith<$Res> {
@@ -421,6 +464,8 @@ class __$FirestoreFailureUnexpectedCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
+
+/// @nodoc
 class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
   _$_FirestoreFailureUnexpected();
 
@@ -483,10 +528,12 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
     @required Result unexpected(),
+    @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return unexpected();
   }
 
@@ -496,6 +543,7 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
     Result insufficientPermissions(),
     Result unableToUpdate(),
     Result unexpected(),
+    Result uninitialized(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -513,10 +561,12 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
             _FirestoreFailureInsufficientPermissions value),
     @required Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     @required Result unexpected(_FirestoreFailureUnexpected value),
+    @required Result uninitialized(_FirestoreFailureUninitialized value),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
+    assert(uninitialized != null);
     return unexpected(this);
   }
 
@@ -527,6 +577,7 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
         _FirestoreFailureInsufficientPermissions value),
     Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
     Result unexpected(_FirestoreFailureUnexpected value),
+    Result uninitialized(_FirestoreFailureUninitialized value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -548,4 +599,166 @@ abstract class _FirestoreFailureUnexpected implements FirestoreFailure {
 
   factory _FirestoreFailureUnexpected.fromJson(Map<String, dynamic> json) =
       _$_FirestoreFailureUnexpected.fromJson;
+}
+
+/// @nodoc
+abstract class _$FirestoreFailureUninitializedCopyWith<$Res> {
+  factory _$FirestoreFailureUninitializedCopyWith(
+          _FirestoreFailureUninitialized value,
+          $Res Function(_FirestoreFailureUninitialized) then) =
+      __$FirestoreFailureUninitializedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$FirestoreFailureUninitializedCopyWithImpl<$Res>
+    extends _$FirestoreFailureCopyWithImpl<$Res>
+    implements _$FirestoreFailureUninitializedCopyWith<$Res> {
+  __$FirestoreFailureUninitializedCopyWithImpl(
+      _FirestoreFailureUninitialized _value,
+      $Res Function(_FirestoreFailureUninitialized) _then)
+      : super(_value, (v) => _then(v as _FirestoreFailureUninitialized));
+
+  @override
+  _FirestoreFailureUninitialized get _value =>
+      super._value as _FirestoreFailureUninitialized;
+}
+
+@JsonSerializable()
+
+/// @nodoc
+class _$_FirestoreFailureUninitialized
+    implements _FirestoreFailureUninitialized {
+  _$_FirestoreFailureUninitialized();
+
+  factory _$_FirestoreFailureUninitialized.fromJson(
+          Map<String, dynamic> json) =>
+      _$_$_FirestoreFailureUninitializedFromJson(json);
+
+  bool _didinsufficientPermissions = false;
+  bool _insufficientPermissions;
+
+  @override
+  bool get insufficientPermissions {
+    if (_didinsufficientPermissions == false) {
+      _didinsufficientPermissions = true;
+      _insufficientPermissions =
+          this is _FirestoreFailureInsufficientPermissions;
+    }
+    return _insufficientPermissions;
+  }
+
+  bool _didunableToUpdate = false;
+  bool _unableToUpdate;
+
+  @override
+  bool get unableToUpdate {
+    if (_didunableToUpdate == false) {
+      _didunableToUpdate = true;
+      _unableToUpdate = this is _FirestoreFailureUnableToUpdate;
+    }
+    return _unableToUpdate;
+  }
+
+  bool _didunexpected = false;
+  bool _unexpected;
+
+  @override
+  bool get unexpected {
+    if (_didunexpected == false) {
+      _didunexpected = true;
+      _unexpected = this is _FirestoreFailureUnexpected;
+    }
+    return _unexpected;
+  }
+
+  @override
+  String toString() {
+    return 'FirestoreFailure.uninitialized(insufficientPermissions: $insufficientPermissions, unableToUpdate: $unableToUpdate, unexpected: $unexpected)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _FirestoreFailureUninitialized);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result insufficientPermissions(),
+    @required Result unableToUpdate(),
+    @required Result unexpected(),
+    @required Result uninitialized(),
+  }) {
+    assert(insufficientPermissions != null);
+    assert(unableToUpdate != null);
+    assert(unexpected != null);
+    assert(uninitialized != null);
+    return uninitialized();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result insufficientPermissions(),
+    Result unableToUpdate(),
+    Result unexpected(),
+    Result uninitialized(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (uninitialized != null) {
+      return uninitialized();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required
+        Result insufficientPermissions(
+            _FirestoreFailureInsufficientPermissions value),
+    @required Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
+    @required Result unexpected(_FirestoreFailureUnexpected value),
+    @required Result uninitialized(_FirestoreFailureUninitialized value),
+  }) {
+    assert(insufficientPermissions != null);
+    assert(unableToUpdate != null);
+    assert(unexpected != null);
+    assert(uninitialized != null);
+    return uninitialized(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result insufficientPermissions(
+        _FirestoreFailureInsufficientPermissions value),
+    Result unableToUpdate(_FirestoreFailureUnableToUpdate value),
+    Result unexpected(_FirestoreFailureUnexpected value),
+    Result uninitialized(_FirestoreFailureUninitialized value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (uninitialized != null) {
+      return uninitialized(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_FirestoreFailureUninitializedToJson(this)
+      ..['runtimeType'] = 'uninitialized';
+  }
+}
+
+abstract class _FirestoreFailureUninitialized implements FirestoreFailure {
+  factory _FirestoreFailureUninitialized() = _$_FirestoreFailureUninitialized;
+
+  factory _FirestoreFailureUninitialized.fromJson(Map<String, dynamic> json) =
+      _$_FirestoreFailureUninitialized.fromJson;
 }

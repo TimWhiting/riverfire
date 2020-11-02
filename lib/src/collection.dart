@@ -12,7 +12,7 @@ part 'collection.g.dart';
 T identity<T>(T item) => item;
 Query defaultQuery(CollectionReference ref) => ref.limit(20);
 
-FutureProvider<RiverFirestoreService<T>>
+Provider<RiverFirestoreService<T>>
     createRiverFirestoreService<T extends FirestoreDoc>(
   FutureProvider<RiverFireConfig> config, {
   @required CollectionReference Function(FirebaseFirestore) getCollection,
@@ -20,10 +20,10 @@ FutureProvider<RiverFirestoreService<T>>
   Query Function(CollectionReference) getQuery,
   T Function(T) toFirestore,
 }) =>
-        FutureProvider<RiverFirestoreService<T>>(
-          (ref) async => RiverFirestoreService(
+        Provider<RiverFirestoreService<T>>(
+          (ref) => RiverFirestoreService(
             ref.read,
-            await ref.read(config.future),
+            config,
             getCollection,
             getQuery,
             fromFirestore,
@@ -35,18 +35,30 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   RiverFirestoreService(this.read, this.config, this._getCollection,
       this._getQuery, this._fromFirestore, T Function(T) toFirestore)
       : _toFirestore = toFirestore ?? identity,
-        _firestore = config.firestore,
         assert(_fromFirestore != null),
-        assert(_getCollection != null);
+        assert(_getCollection != null) {
+    _init();
+  }
+
   final Reader read;
-  final RiverFireConfig config;
+  final FutureProvider<RiverFireConfig> config;
   final CollectionReference Function(FirebaseFirestore) _getCollection;
   final Query Function(CollectionReference) _getQuery;
   final T Function(DocumentSnapshot) _fromFirestore;
   final T Function(T) _toFirestore;
-  final FirebaseFirestore _firestore;
+  FirebaseFirestore _firestore;
+
+  Future<void> _init() async {
+    _firestore = (await read(config.future)).firestore;
+  }
+
+  bool get initialized => _firestore != null;
 
   Stream<Either<FirestoreFailure, KtList<T>>> watchAll() async* {
+    if (!initialized) {
+      yield left(FirestoreFailure.uninitialized());
+      return;
+    }
     yield* _getQuery(_getCollection(_firestore))
         .snapshots()
         .map(
@@ -65,6 +77,9 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Future<Either<FirestoreFailure, bool>> exists(T doc) async {
+    if (!initialized) {
+      return left(FirestoreFailure.uninitialized());
+    }
     try {
       final fDoc = await _getCollection(_firestore).doc(doc.id).get();
       if (fDoc.exists) {
@@ -83,6 +98,10 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Stream<Either<FirestoreFailure, T>> watch(T doc) async* {
+    if (!initialized) {
+      yield left(FirestoreFailure.uninitialized());
+      return;
+    }
     yield* _getCollection(_firestore)
         .doc(doc.id)
         .snapshots()
@@ -102,6 +121,10 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Stream<Either<FirestoreFailure, T>> watchById(String docId) async* {
+    if (!initialized) {
+      yield left(FirestoreFailure.uninitialized());
+      return;
+    }
     yield* _getCollection(_firestore)
         .doc(docId)
         .snapshots()
@@ -121,6 +144,9 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Future<Either<FirestoreFailure, Unit>> create(T doc) async {
+    if (!initialized) {
+      return left(FirestoreFailure.uninitialized());
+    }
     try {
       await _getCollection(_firestore)
           .doc(doc.id)
@@ -137,6 +163,9 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Future<Either<FirestoreFailure, Unit>> update(T doc) async {
+    if (!initialized) {
+      return left(FirestoreFailure.uninitialized());
+    }
     try {
       await _getCollection(_firestore)
           .doc(doc.id)
@@ -155,6 +184,9 @@ class RiverFirestoreService<T extends FirestoreDoc> {
   }
 
   Future<Either<FirestoreFailure, Unit>> delete(T doc) async {
+    if (!initialized) {
+      return left(FirestoreFailure.uninitialized());
+    }
     try {
       await _getCollection(_firestore).doc(doc.id).delete();
 
@@ -177,6 +209,7 @@ abstract class FirestoreFailure with _$FirestoreFailure {
       _FirestoreFailureInsufficientPermissions;
   factory FirestoreFailure.unableToUpdate() = _FirestoreFailureUnableToUpdate;
   factory FirestoreFailure.unexpected() = _FirestoreFailureUnexpected;
+  factory FirestoreFailure.uninitialized() = _FirestoreFailureUninitialized;
   factory FirestoreFailure.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFailureFromJson(json);
 

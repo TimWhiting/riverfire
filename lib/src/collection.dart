@@ -273,12 +273,12 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
   /// Updates the doc with [docId] with [updateFunction]
   ///
   /// If the current state is null, [updateIfNull] determines whether to overwrite or create the document
-  Future<Either<FirestoreFailure, Unit>> update(T Function(T) updateFunction,
+  Future<Either<FirestoreFailure, bool>> update(T Function(T) updateFunction,
       {bool updateIfNull = false}) async {
     if (state != null || updateIfNull) {
-      return service.update(updateFunction(state));
+      return (await service.update(updateFunction(state))).map((r) => true);
     }
-    return right<FirestoreFailure, Unit>(unit);
+    return right<FirestoreFailure, bool>(false);
   }
 }
 
@@ -318,28 +318,30 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
   KtList<T> get current => state;
 
   /// Updates the doc with [id] with [updateFunction]
-  Future<Either<FirestoreFailure, Unit>> update(
+  Future<Either<FirestoreFailure, bool>> update(
       String id, T Function(T) updateFunction) async {
     if (state != null) {
-      return service.update(updateFunction(state.first((t) => t.id == id)));
+      return (await service
+              .update(updateFunction(state.first((t) => t.id == id))))
+          .map((r) => true);
     }
-    return right<FirestoreFailure, Unit>(unit);
+    return right<FirestoreFailure, bool>(false);
   }
 
   /// Removes doc with [docId]
-  Future<Either<FirestoreFailure, Unit>> delete(String docId) async {
+  Future<Either<FirestoreFailure, bool>> delete(String docId) async {
     if (state != null) {
-      return service.delete(docId);
+      return (await service.delete(docId)).map((r) => true);
     }
-    return right<FirestoreFailure, Unit>(unit);
+    return right<FirestoreFailure, bool>(false);
   }
 
   /// Adds the [doc] to the collection
-  Future<Either<FirestoreFailure, Unit>> create(T doc) async {
+  Future<Either<FirestoreFailure, bool>> create(T doc) async {
     if (state != null) {
-      return service.create(doc);
+      return (await service.create(doc)).map((r) => true);
     }
-    return right<FirestoreFailure, Unit>(unit);
+    return right<FirestoreFailure, bool>(false);
   }
 }
 

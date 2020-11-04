@@ -291,14 +291,14 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
 extension DocWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
   StateNotifierProvider<RiverFirestoreDocWatcher<T>> docWatcher(
-    String docId, {
+    Provider<String> docIdProvider, {
     StateProvider<FirestoreFailure> errorProvider,
   }) =>
       StateNotifierProvider<RiverFirestoreDocWatcher<T>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
-          docId: docId,
+          docId: ref.watch(docIdProvider),
           errorProvider: errorProvider,
         ),
       );

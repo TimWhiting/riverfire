@@ -83,3 +83,9 @@ class RiverFireAuth {
     await auth.signOut();
   }
 }
+
+extension RiverFireAppAuthX on FutureProvider<FirebaseApp> {
+  FutureProvider<RiverFireAuth> riverFireAuth(
+          Provider<GoogleSignIn> googleSignIn) =>
+      createRiverFireAuth(this, googleSignIn);
+}

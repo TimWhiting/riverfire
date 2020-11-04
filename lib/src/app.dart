@@ -18,9 +18,15 @@ class RiverFireConfig {
   RiverFireConfig(this.ref, this.app, {bool persist = true}) {
     firestore = FirebaseFirestore.instanceFor(app: app);
     firestore.settings = Settings(persistenceEnabled: persist);
+    firestore.enablePersistence();
   }
   final FirebaseApp app;
   FirebaseFirestore firestore;
   FirebaseApp get firebaseApp => app;
   final ProviderReference ref;
+}
+
+extension RiverFireAppConfigX on FutureProvider<FirebaseApp> {
+  FutureProvider<RiverFireConfig> riverFireConfig({bool persist = true}) =>
+      createRiverFireConfig(this, persist: persist);
 }

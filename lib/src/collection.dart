@@ -282,13 +282,13 @@ extension DocWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
   StateNotifierProvider<RiverFirestoreDocWatcher<T>> docWatcher(
           Provider<String> docIdProvider,
-          {T initialState}) =>
+          {T Function(Reader) initialState}) =>
       StateNotifierProvider<RiverFirestoreDocWatcher<T>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
           docId: ref.watch(docIdProvider),
-          initialState: initialState,
+          initialState: initialState(ref.read),
         ),
       );
 }

@@ -11,8 +11,18 @@ class StateNotifierWithErrorProvider<E, T>
   // ignore: avoid_setters_without_getters
   set nextState(Either<E, T> s) {
     state = s.fold(
-        (e) => StateError.error(lastValidState: state.current, error: e),
-        (v) => StateError.valid(v));
+      (e) => StateError.error(lastValidState: state.current, error: e),
+      (v) => StateError.valid(v),
+    );
+  }
+
+  void clearError() {
+    if (state.hasError) {
+      state = state.map(
+        valid: (s) => s,
+        error: (e) => StateError.valid(e.lastValidState),
+      );
+    }
   }
 }
 

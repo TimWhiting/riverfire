@@ -252,7 +252,8 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     this.serviceProvider,
     this.read,
     this.docId,
-  }) : super(null) {
+    T initialState,
+  }) : super(initialState) {
     _service.watchById(docId).listen((s) => nextState = s);
   }
 
@@ -280,13 +281,14 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
 extension DocWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
   StateNotifierProvider<RiverFirestoreDocWatcher<T>> docWatcher(
-    Provider<String> docIdProvider,
-  ) =>
+          Provider<String> docIdProvider,
+          {T initialState}) =>
       StateNotifierProvider<RiverFirestoreDocWatcher<T>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
           docId: ref.watch(docIdProvider),
+          initialState: initialState,
         ),
       );
 }

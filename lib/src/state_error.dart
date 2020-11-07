@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod/all.dart';
+export 'package:dartz/dartz.dart' show Either, Unit;
 part 'state_error.freezed.dart';
 
 class StateNotifierWithErrorProvider<E, T>

@@ -246,33 +246,23 @@ extension RiverFireServiceConfigX on FutureProvider<RiverFireConfig> {
 
 /// Watches a doc with [docId] for changes and exposes the state in a state notifier, also provides an interface for updating that doc
 class RiverFirestoreDocWatcher<T extends FirestoreDoc>
-    extends StateNotifier<T> {
+    extends StateNotifier<Either<FirestoreFailure, T>> {
   RiverFirestoreDocWatcher({
     this.serviceProvider,
     this.read,
     this.docId,
-    StateProvider<FirestoreFailure> errorProvider,
-  })  : errorProvider =
-            errorProvider ?? StateProvider<FirestoreFailure>((ref) => null),
-        super(null) {
-    _service.watchById(docId).listen(_updateState);
+  }) : super(null) {
+    _service.watchById(docId).listen((s) => state = s);
   }
 
-  final StateProvider<FirestoreFailure> errorProvider;
   final Provider<RiverFirestoreService<T>> serviceProvider;
   final Reader read;
   final String docId;
 
   RiverFirestoreService<T> get _service => read(serviceProvider);
 
-  void _updateState(Either<FirestoreFailure, T> doc) {
-    doc.fold(
-      (failure) => read(errorProvider).state = failure,
-      (newState) => state = newState,
-    );
-  }
 
-  T get current => state;
+  Either<FirestoreFailure, T> get current => state;
 
   /// Updates the doc with [docId] with [updateFunction]
   ///
@@ -282,7 +272,7 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     bool updateIfNull = false,
   }) async {
     if (state != null || updateIfNull) {
-      return (await _service.update(updateFunction(state))).map((r) => true);
+      return state.map((s) async =>  _service.update(updateFunction(s))).map((r) => true);
     }
     return right<FirestoreFailure, bool>(false);
   }
@@ -291,52 +281,40 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
 extension DocWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
   StateNotifierProvider<RiverFirestoreDocWatcher<T>> docWatcher(
-    Provider<String> docIdProvider, {
-    StateProvider<FirestoreFailure> errorProvider,
-  }) =>
+    Provider<String> docIdProvider,
+  ) =>
       StateNotifierProvider<RiverFirestoreDocWatcher<T>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
           docId: ref.watch(docIdProvider),
-          errorProvider: errorProvider,
         ),
       );
 }
 
 /// Watches a collection for changes and exposes the state in a state notifier, also provides an interface for updating that doc
 class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
-    extends StateNotifier<KtList<T>> {
+    extends StateNotifier<Either<FirestoreFailure, KtList<T>>> {
   RiverFirestoreCollectionWatcher({
     this.serviceProvider,
     this.read,
-    StateProvider<FirestoreFailure> errorProvider,
-  })  : errorProvider =
-            errorProvider ?? StateProvider<FirestoreFailure>((ref) => null),
-        super(null) {
-    _service.watchAll().listen(_updateState);
+  }) : super(right<FirestoreFailure, KtList<T>>(listOf())) {
+    _service.watchAll().listen((s) => state = s);
   }
 
   final Reader read;
   final Provider<RiverFirestoreService<T>> serviceProvider;
-  final StateProvider<FirestoreFailure> errorProvider;
   RiverFirestoreService<T> get _service => read(serviceProvider);
 
-  void _updateState(Either<FirestoreFailure, KtList<T>> updates) {
-    updates.fold(
-      (failure) => read(errorProvider).state = failure,
-      (newState) => state = newState,
-    );
-  }
-
-  KtList<T> get current => state;
+  Either<FirestoreFailure, KtList<T>> get current => state;
 
   /// Updates the doc with [id] with [updateFunction]
   Future<Either<FirestoreFailure, bool>> update(
       String id, T Function(T) updateFunction) async {
-    if (state != null) {
-      return (await _service
-              .update(updateFunction(state.first((t) => t.id == id))))
+    if (state != null && state.isRight()) {
+      return state
+          .map((s) async =>
+              _service.update(updateFunction(s.first((t) => t.id == id))))
           .map((r) => true);
     }
     return right<FirestoreFailure, bool>(false);
@@ -361,14 +339,12 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
 
 extension CollectionWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
-  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>> collectionWatcher({
-    StateProvider<FirestoreFailure> errorProvider,
-  }) =>
-      StateNotifierProvider<RiverFirestoreCollectionWatcher<T>>(
-        (ref) => RiverFirestoreCollectionWatcher<T>(
-          serviceProvider: this,
-          read: ref.read,
-          errorProvider: errorProvider,
-        ),
-      );
+  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>>
+      collectionWatcher() =>
+          StateNotifierProvider<RiverFirestoreCollectionWatcher<T>>(
+            (ref) => RiverFirestoreCollectionWatcher<T>(
+              serviceProvider: this,
+              read: ref.read,
+            ),
+          );
 }

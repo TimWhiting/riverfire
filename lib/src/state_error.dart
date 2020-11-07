@@ -38,7 +38,7 @@ abstract class StateError<E, T> with _$StateError<E, T> {
   @late
   bool get hasError => this is _ErrorState;
   @late
-  E get error => when(valid: (s) => null, error: (s, e) => e);
+  E get errorOrNull => when(valid: (s) => null, error: (s, e) => e);
   @late
   String get errorString =>
       when(valid: (s) => 'No Error', error: (s, e) => e.toString());

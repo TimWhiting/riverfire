@@ -136,16 +136,16 @@ class _$_ValidState<E, T> implements _ValidState<E, T> {
     return _hasError;
   }
 
-  bool _diderror = false;
-  E _error;
+  bool _diderrorOrNull = false;
+  E _errorOrNull;
 
   @override
-  E get error {
-    if (_diderror == false) {
-      _diderror = true;
-      _error = when(valid: (s) => null, error: (s, e) => e);
+  E get errorOrNull {
+    if (_diderrorOrNull == false) {
+      _diderrorOrNull = true;
+      _errorOrNull = when(valid: (s) => null, error: (s, e) => e);
     }
-    return _error;
+    return _errorOrNull;
   }
 
   bool _diderrorString = false;
@@ -163,7 +163,7 @@ class _$_ValidState<E, T> implements _ValidState<E, T> {
 
   @override
   String toString() {
-    return 'StateError<$E, $T>.valid(state: $state, current: $current, hasError: $hasError, error: $error, errorString: $errorString)';
+    return 'StateError<$E, $T>.valid(state: $state, current: $current, hasError: $hasError, errorOrNull: $errorOrNull, errorString: $errorString)';
   }
 
   @override
@@ -306,16 +306,16 @@ class _$_ErrorState<E, T> implements _ErrorState<E, T> {
     return _hasError;
   }
 
-  bool _diderror = false;
-  E _error;
+  bool _diderrorOrNull = false;
+  E _errorOrNull;
 
   @override
-  E get error {
-    if (_diderror == false) {
-      _diderror = true;
-      _error = when(valid: (s) => null, error: (s, e) => e);
+  E get errorOrNull {
+    if (_diderrorOrNull == false) {
+      _diderrorOrNull = true;
+      _errorOrNull = when(valid: (s) => null, error: (s, e) => e);
     }
-    return _error;
+    return _errorOrNull;
   }
 
   bool _diderrorString = false;
@@ -333,7 +333,7 @@ class _$_ErrorState<E, T> implements _ErrorState<E, T> {
 
   @override
   String toString() {
-    return 'StateError<$E, $T>.error(lastValidState: $lastValidState, error: $error, current: $current, hasError: $hasError, error: $error, errorString: $errorString)';
+    return 'StateError<$E, $T>.error(lastValidState: $lastValidState, error: $error, current: $current, hasError: $hasError, errorOrNull: $errorOrNull, errorString: $errorString)';
   }
 
   @override

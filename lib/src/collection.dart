@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:dartx/dartx.dart';
 import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
 import 'app.dart';
@@ -72,7 +73,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     });
   }
@@ -93,7 +94,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     }
   }
@@ -116,7 +117,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     });
   }
@@ -139,7 +140,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     });
   }
@@ -158,7 +159,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     }
   }
@@ -179,7 +180,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       } else if (e.message.contains('NOT_FOUND')) {
         return left(FirestoreFailure.unableToUpdate());
       } else {
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     }
   }
@@ -198,7 +199,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       } else if (e.message.contains('NOT_FOUND')) {
         return left(FirestoreFailure.unableToUpdate());
       } else {
-        return left(FirestoreFailure.unexpected());
+        return left(FirestoreFailure.unexpected(e.toString()));
       }
     }
   }
@@ -209,7 +210,8 @@ abstract class FirestoreFailure with _$FirestoreFailure {
   factory FirestoreFailure.insufficientPermissions() =
       _FirestoreFailureInsufficientPermissions;
   factory FirestoreFailure.unableToUpdate() = _FirestoreFailureUnableToUpdate;
-  factory FirestoreFailure.unexpected() = _FirestoreFailureUnexpected;
+  factory FirestoreFailure.unexpected(String e) =
+      _FirestoreFailureUnexpected;
   factory FirestoreFailure.uninitialized() = _FirestoreFailureUninitialized;
   factory FirestoreFailure.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFailureFromJson(json);
@@ -254,7 +256,8 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     this.docId,
     T initialState,
   }) : super(initialState) {
-    _service.watchById(docId).listen((s) => nextState = s);
+    Future.delayed(20.milliseconds,
+        () => _service.watchById(docId).listen((s) => nextState = s));
   }
 
   final Provider<RiverFirestoreService<T>> serviceProvider;

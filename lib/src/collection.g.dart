@@ -27,12 +27,16 @@ Map<String, dynamic> _$_$_FirestoreFailureUnableToUpdateToJson(
 
 _$_FirestoreFailureUnexpected _$_$_FirestoreFailureUnexpectedFromJson(
     Map<String, dynamic> json) {
-  return _$_FirestoreFailureUnexpected();
+  return _$_FirestoreFailureUnexpected(
+    json['e'] as String,
+  );
 }
 
 Map<String, dynamic> _$_$_FirestoreFailureUnexpectedToJson(
         _$_FirestoreFailureUnexpected instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'e': instance.e,
+    };
 
 _$_FirestoreFailureUninitialized _$_$_FirestoreFailureUninitializedFromJson(
     Map<String, dynamic> json) {

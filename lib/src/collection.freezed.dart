@@ -39,8 +39,10 @@ class _$FirestoreFailureTearOff {
   }
 
 // ignore: unused_element
-  _FirestoreFailureUnexpected unexpected() {
-    return _FirestoreFailureUnexpected();
+  _FirestoreFailureUnexpected unexpected(String e) {
+    return _FirestoreFailureUnexpected(
+      e,
+    );
   }
 
 // ignore: unused_element
@@ -64,14 +66,14 @@ mixin _$FirestoreFailure {
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
-    @required Result unexpected(),
+    @required Result unexpected(String e),
     @required Result uninitialized(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
-    Result unexpected(),
+    Result unexpected(String e),
     Result uninitialized(),
     @required Result orElse(),
   });
@@ -203,7 +205,7 @@ class _$_FirestoreFailureInsufficientPermissions
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
-    @required Result unexpected(),
+    @required Result unexpected(String e),
     @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
@@ -218,7 +220,7 @@ class _$_FirestoreFailureInsufficientPermissions
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
-    Result unexpected(),
+    Result unexpected(String e),
     Result uninitialized(),
     @required Result orElse(),
   }) {
@@ -368,7 +370,7 @@ class _$_FirestoreFailureUnableToUpdate
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
-    @required Result unexpected(),
+    @required Result unexpected(String e),
     @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
@@ -383,7 +385,7 @@ class _$_FirestoreFailureUnableToUpdate
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
-    Result unexpected(),
+    Result unexpected(String e),
     Result uninitialized(),
     @required Result orElse(),
   }) {
@@ -448,6 +450,7 @@ abstract class _$FirestoreFailureUnexpectedCopyWith<$Res> {
           _FirestoreFailureUnexpected value,
           $Res Function(_FirestoreFailureUnexpected) then) =
       __$FirestoreFailureUnexpectedCopyWithImpl<$Res>;
+  $Res call({String e});
 }
 
 /// @nodoc
@@ -461,16 +464,28 @@ class __$FirestoreFailureUnexpectedCopyWithImpl<$Res>
   @override
   _FirestoreFailureUnexpected get _value =>
       super._value as _FirestoreFailureUnexpected;
+
+  @override
+  $Res call({
+    Object e = freezed,
+  }) {
+    return _then(_FirestoreFailureUnexpected(
+      e == freezed ? _value.e : e as String,
+    ));
+  }
 }
 
 @JsonSerializable()
 
 /// @nodoc
 class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
-  _$_FirestoreFailureUnexpected();
+  _$_FirestoreFailureUnexpected(this.e) : assert(e != null);
 
   factory _$_FirestoreFailureUnexpected.fromJson(Map<String, dynamic> json) =>
       _$_$_FirestoreFailureUnexpectedFromJson(json);
+
+  @override
+  final String e;
 
   bool _didinsufficientPermissions = false;
   bool _insufficientPermissions;
@@ -511,30 +526,39 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
 
   @override
   String toString() {
-    return 'FirestoreFailure.unexpected(insufficientPermissions: $insufficientPermissions, unableToUpdate: $unableToUpdate, unexpected: $unexpected)';
+    return 'FirestoreFailure.unexpected(e: $e, insufficientPermissions: $insufficientPermissions, unableToUpdate: $unableToUpdate, unexpected: $unexpected)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _FirestoreFailureUnexpected);
+    return identical(this, other) ||
+        (other is _FirestoreFailureUnexpected &&
+            (identical(other.e, e) ||
+                const DeepCollectionEquality().equals(other.e, e)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(e);
+
+  @override
+  _$FirestoreFailureUnexpectedCopyWith<_FirestoreFailureUnexpected>
+      get copyWith => __$FirestoreFailureUnexpectedCopyWithImpl<
+          _FirestoreFailureUnexpected>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
-    @required Result unexpected(),
+    @required Result unexpected(String e),
     @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
     assert(unableToUpdate != null);
     assert(unexpected != null);
     assert(uninitialized != null);
-    return unexpected();
+    return unexpected(e);
   }
 
   @override
@@ -542,13 +566,13 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
-    Result unexpected(),
+    Result unexpected(String e),
     Result uninitialized(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (unexpected != null) {
-      return unexpected();
+      return unexpected(e);
     }
     return orElse();
   }
@@ -595,10 +619,14 @@ class _$_FirestoreFailureUnexpected implements _FirestoreFailureUnexpected {
 }
 
 abstract class _FirestoreFailureUnexpected implements FirestoreFailure {
-  factory _FirestoreFailureUnexpected() = _$_FirestoreFailureUnexpected;
+  factory _FirestoreFailureUnexpected(String e) = _$_FirestoreFailureUnexpected;
 
   factory _FirestoreFailureUnexpected.fromJson(Map<String, dynamic> json) =
       _$_FirestoreFailureUnexpected.fromJson;
+
+  String get e;
+  _$FirestoreFailureUnexpectedCopyWith<_FirestoreFailureUnexpected>
+      get copyWith;
 }
 
 /// @nodoc
@@ -689,7 +717,7 @@ class _$_FirestoreFailureUninitialized
   Result when<Result extends Object>({
     @required Result insufficientPermissions(),
     @required Result unableToUpdate(),
-    @required Result unexpected(),
+    @required Result unexpected(String e),
     @required Result uninitialized(),
   }) {
     assert(insufficientPermissions != null);
@@ -704,7 +732,7 @@ class _$_FirestoreFailureUninitialized
   Result maybeWhen<Result extends Object>({
     Result insufficientPermissions(),
     Result unableToUpdate(),
-    Result unexpected(),
+    Result unexpected(String e),
     Result uninitialized(),
     @required Result orElse(),
   }) {

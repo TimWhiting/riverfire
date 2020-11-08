@@ -78,12 +78,12 @@ class RiverFirestoreService<T extends FirestoreDoc> {
     });
   }
 
-  Future<Either<FirestoreFailure, bool>> exists(T doc) async {
+  Future<Either<FirestoreFailure, bool>> exists(String docId) async {
     if (!initialized) {
       return left(FirestoreFailure.uninitialized());
     }
     try {
-      final fDoc = await _getCollection(_firestore).doc(doc.id).get();
+      final fDoc = await _getCollection(_firestore).doc(docId).get();
       if (fDoc.exists) {
         return right(true);
       } else {
@@ -210,8 +210,7 @@ abstract class FirestoreFailure with _$FirestoreFailure {
   factory FirestoreFailure.insufficientPermissions() =
       _FirestoreFailureInsufficientPermissions;
   factory FirestoreFailure.unableToUpdate() = _FirestoreFailureUnableToUpdate;
-  factory FirestoreFailure.unexpected(String e) =
-      _FirestoreFailureUnexpected;
+  factory FirestoreFailure.unexpected(String e) = _FirestoreFailureUnexpected;
   factory FirestoreFailure.uninitialized() = _FirestoreFailureUninitialized;
   factory FirestoreFailure.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFailureFromJson(json);
@@ -256,8 +255,15 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     this.docId,
     T initialState,
   }) : super(initialState) {
-    Future.delayed(20.milliseconds,
-        () => _service.watchById(docId).listen((s) => nextState = s));
+    init();
+  }
+  Future<void> init() async {
+    final existsOrError = await _service.exists(docId);
+    final result = existsOrError.fold((e) => null, (exists) => exists);
+    if (result == false && state.current != null) {
+      await _service.create(state.current);
+    }
+    _service.watchById(docId).listen((s) => nextState = s);
   }
 
   final Provider<RiverFirestoreService<T>> serviceProvider;

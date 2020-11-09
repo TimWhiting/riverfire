@@ -3,11 +3,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:dartx/dartx.dart';
 import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
 import 'app.dart';
 import 'state_error.dart';
+export 'package:kt_dart/kt.dart';
 part 'collection.freezed.dart';
 part 'collection.g.dart';
 
@@ -17,7 +17,9 @@ Query defaultQuery(CollectionReference ref) => ref.limit(20);
 Provider<RiverFirestoreService<T>>
     createRiverFirestoreService<T extends FirestoreDoc>(
   FutureProvider<RiverFireConfig> config, {
-  @required CollectionReference Function(FirebaseFirestore) getCollection,
+  @required
+      CollectionReference Function(FirebaseFirestore) Function(Reader reader)
+          getCollection,
   @required T Function(DocumentSnapshot) fromFirestore,
   Query Function(CollectionReference) getQuery,
   T Function(T) toFirestore,
@@ -26,7 +28,7 @@ Provider<RiverFirestoreService<T>>
           (ref) => RiverFirestoreService(
             ref.read,
             config,
-            getCollection,
+            getCollection(ref.watch),
             getQuery,
             fromFirestore,
             toFirestore,
@@ -232,7 +234,9 @@ abstract class FirestoreDoc {
 extension RiverFireServiceConfigX on FutureProvider<RiverFireConfig> {
   Provider<RiverFirestoreService<T>>
       riverFirestoreService<T extends FirestoreDoc>({
-    @required CollectionReference Function(FirebaseFirestore) getCollection,
+    @required
+        CollectionReference Function(FirebaseFirestore) Function(Reader)
+            getCollection,
     @required T Function(DocumentSnapshot) fromFirestore,
     Query Function(CollectionReference) getQuery,
     T Function(T) toFirestore,

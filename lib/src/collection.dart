@@ -18,8 +18,7 @@ Provider<RiverFirestoreService<T>>
     createRiverFirestoreService<T extends FirestoreDoc>(
   FutureProvider<RiverFireConfig> config, {
   @required
-      CollectionReference Function(FirebaseFirestore) Function(Reader reader)
-          getCollection,
+      CollectionReference Function(Reader, FirebaseFirestore) getCollection,
   @required T Function(DocumentSnapshot) fromFirestore,
   Query Function(CollectionReference) getQuery,
   T Function(T) toFirestore,
@@ -28,7 +27,7 @@ Provider<RiverFirestoreService<T>>
           (ref) => RiverFirestoreService(
             ref.read,
             config,
-            getCollection(ref.watch),
+            (firestore) => getCollection(ref.watch, firestore),
             getQuery,
             fromFirestore,
             toFirestore,

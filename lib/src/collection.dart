@@ -234,7 +234,7 @@ extension RiverFireServiceConfigX on FutureProvider<RiverFireConfig> {
   Provider<RiverFirestoreService<T>>
       riverFirestoreService<T extends FirestoreDoc>({
     @required
-        CollectionReference Function(FirebaseFirestore) Function(Reader)
+        CollectionReference Function(Reader, FirebaseFirestore)
             getCollection,
     @required T Function(DocumentSnapshot) fromFirestore,
     Query Function(CollectionReference) getQuery,

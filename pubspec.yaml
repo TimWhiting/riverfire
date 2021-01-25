@@ -18,14 +18,14 @@ dependencies:
   google_sign_in: any
   json_annotation: any
   kt_dart: any
-  riverpod: any
+  riverpod: ^0.12.0
   rxdart: any
 
 dev_dependencies:
   abide: any
   build_runner: any
   derry: any
-  freezed: any
+  freezed: ^0.12.0
   json_serializable_immutable_collections: any
   test: any
 

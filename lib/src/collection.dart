@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kt_dart/kt.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
 import 'app.dart';
 import 'state_error.dart';
-export 'package:kt_dart/kt.dart';
 part 'collection.freezed.dart';
 part 'collection.g.dart';
 
@@ -57,7 +55,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
 
   bool get initialized => _firestore != null;
 
-  Stream<Either<FirestoreFailure, KtList<T>>> watchAll() async* {
+  Stream<Either<FirestoreFailure, List<T>>> watchAll() async* {
     if (!initialized) {
       yield left(FirestoreFailure.uninitialized());
       return;
@@ -65,8 +63,8 @@ class RiverFirestoreService<T extends FirestoreDoc> {
     yield* _getQuery(_getCollection(_firestore))
         .snapshots()
         .map(
-          (snapshot) => right<FirestoreFailure, KtList<T>>(
-            snapshot.docs.map(_fromFirestore).toImmutableList(),
+          (snapshot) => right<FirestoreFailure, List<T>>(
+            List.unmodifiable(snapshot.docs.map(_fromFirestore)),
           ),
         )
         .onErrorReturnWith((e) {
@@ -234,8 +232,7 @@ extension RiverFireServiceConfigX on FutureProvider<RiverFireConfig> {
   Provider<RiverFirestoreService<T>>
       riverFirestoreService<T extends FirestoreDoc>({
     @required
-        CollectionReference Function(Reader, FirebaseFirestore)
-            getCollection,
+        CollectionReference Function(Reader, FirebaseFirestore) getCollection,
     @required T Function(DocumentSnapshot) fromFirestore,
     Query Function(CollectionReference) getQuery,
     T Function(T) toFirestore,
@@ -307,11 +304,11 @@ extension DocWatcher<T extends FirestoreDoc>
 
 /// Watches a collection for changes and exposes the state in a state notifier, also provides an interface for updating that doc
 class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
-    extends StateNotifierWithErrorProvider<FirestoreFailure, KtList<T>> {
+    extends StateNotifierWithErrorProvider<FirestoreFailure, List<T>> {
   RiverFirestoreCollectionWatcher({
     this.serviceProvider,
     this.read,
-  }) : super(listOf()) {
+  }) : super(List.unmodifiable([])) {
     _service.watchAll().listen((s) => nextState = s);
   }
 
@@ -323,8 +320,8 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
   Future<Either<FirestoreFailure, bool>> update(
       String id, T Function(T) updateFunction) async {
     if (state != null && state.hasError) {
-      return (await _service
-              .update(updateFunction(state.current.first((t) => t.id == id))))
+      return (await _service.update(
+              updateFunction(state.current.firstWhere((t) => t.id == id))))
           .map((r) => true);
     }
     return right<FirestoreFailure, bool>(false);

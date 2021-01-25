@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dartx/dartx.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod/riverpod.dart';
@@ -73,7 +72,7 @@ class RiverFireAuth {
       print(st);
     }
 
-    Future.delayed(1000.milliseconds, () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       print(user);
     });
     return user;

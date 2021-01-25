@@ -4,10 +4,10 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  cloud_firestore: 0.14.2
+  cloud_firestore: 0.16.0
   dartx: any
   dartz: any
   firebase_auth: any

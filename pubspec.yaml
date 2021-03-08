@@ -7,15 +7,15 @@ environment:
   sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
-  cloud_firestore: 0.16.0
+  cloud_firestore: ^1.0.0
   dartz: any
   firebase_auth: any
   firebase_core: any
   flutter:
     sdk: flutter
-  freezed_annotation: any
+  freezed_annotation: ^0.12.0
   google_sign_in: any
-  json_annotation: any
+  json_annotation: ^3.0.0
   riverpod: ^0.12.0
   rxdart: any
 

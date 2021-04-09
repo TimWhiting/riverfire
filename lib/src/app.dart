@@ -23,7 +23,7 @@ class RiverFireConfig {
     }
   }
   final FirebaseApp app;
-  FirebaseFirestore firestore;
+  late FirebaseFirestore firestore;
   FirebaseApp get firebaseApp => app;
   final ProviderReference ref;
 }

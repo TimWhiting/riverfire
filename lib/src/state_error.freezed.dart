@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'state_error.dart';
 
@@ -9,54 +9,58 @@ part of 'state_error.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$StateErrorTearOff {
   const _$StateErrorTearOff();
 
-// ignore: unused_element
-  _ValidState<E, T> valid<E, T>(T state) {
+  _ValidState<E, T> valid<E, T>(T? state) {
     return _ValidState<E, T>(
       state,
     );
   }
 
-// ignore: unused_element
-  _ErrorState<E, T> error<E, T>({T lastValidState, E error}) {
+  _ErrorState<E, T> error<E, T>({required E error, T? lastValidState}) {
     return _ErrorState<E, T>(
-      lastValidState: lastValidState,
       error: error,
+      lastValidState: lastValidState,
     );
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $StateError = _$StateErrorTearOff();
 
 /// @nodoc
 mixin _$StateError<E, T> {
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result valid(T state),
-    @required Result error(T lastValidState, E error),
-  });
+  TResult when<TResult extends Object?>({
+    required TResult Function(T? state) valid,
+    required TResult Function(E error, T? lastValidState) error,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result valid(T state),
-    Result error(T lastValidState, E error),
-    @required Result orElse(),
-  });
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T? state)? valid,
+    TResult Function(E error, T? lastValidState)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result valid(_ValidState<E, T> value),
-    @required Result error(_ErrorState<E, T> value),
-  });
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ValidState<E, T> value) valid,
+    required TResult Function(_ErrorState<E, T> value) error,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result valid(_ValidState<E, T> value),
-    Result error(_ErrorState<E, T> value),
-    @required Result orElse(),
-  });
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ValidState<E, T> value)? valid,
+    TResult Function(_ErrorState<E, T> value)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -81,7 +85,7 @@ abstract class _$ValidStateCopyWith<E, T, $Res> {
   factory _$ValidStateCopyWith(
           _ValidState<E, T> value, $Res Function(_ValidState<E, T>) then) =
       __$ValidStateCopyWithImpl<E, T, $Res>;
-  $Res call({T state});
+  $Res call({T? state});
 }
 
 /// @nodoc
@@ -97,73 +101,27 @@ class __$ValidStateCopyWithImpl<E, T, $Res>
 
   @override
   $Res call({
-    Object state = freezed,
+    Object? state = freezed,
   }) {
     return _then(_ValidState<E, T>(
-      state == freezed ? _value.state : state as T,
+      state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as T?,
     ));
   }
 }
 
 /// @nodoc
-class _$_ValidState<E, T> implements _ValidState<E, T> {
-  _$_ValidState(this.state) : assert(state != null);
+class _$_ValidState<E, T> extends _ValidState<E, T> {
+  _$_ValidState(this.state) : super._();
 
   @override
-  final T state;
-
-  bool _didcurrent = false;
-  T _current;
-
-  @override
-  T get current {
-    if (_didcurrent == false) {
-      _didcurrent = true;
-      _current = when(valid: (s) => s, error: (s, e) => s);
-    }
-    return _current;
-  }
-
-  bool _didhasError = false;
-  bool _hasError;
-
-  @override
-  bool get hasError {
-    if (_didhasError == false) {
-      _didhasError = true;
-      _hasError = this is _ErrorState;
-    }
-    return _hasError;
-  }
-
-  bool _diderrorOrNull = false;
-  E _errorOrNull;
-
-  @override
-  E get errorOrNull {
-    if (_diderrorOrNull == false) {
-      _diderrorOrNull = true;
-      _errorOrNull = when(valid: (s) => null, error: (s, e) => e);
-    }
-    return _errorOrNull;
-  }
-
-  bool _diderrorString = false;
-  String _errorString;
-
-  @override
-  String get errorString {
-    if (_diderrorString == false) {
-      _diderrorString = true;
-      _errorString =
-          when(valid: (s) => 'No Error', error: (s, e) => e.toString());
-    }
-    return _errorString;
-  }
+  final T? state;
 
   @override
   String toString() {
-    return 'StateError<$E, $T>.valid(state: $state, current: $current, hasError: $hasError, errorOrNull: $errorOrNull, errorString: $errorString)';
+    return 'StateError<$E, $T>.valid(state: $state)';
   }
 
   @override
@@ -178,29 +136,27 @@ class _$_ValidState<E, T> implements _ValidState<E, T> {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(state);
 
+  @JsonKey(ignore: true)
   @override
   _$ValidStateCopyWith<E, T, _ValidState<E, T>> get copyWith =>
       __$ValidStateCopyWithImpl<E, T, _ValidState<E, T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result valid(T state),
-    @required Result error(T lastValidState, E error),
+  TResult when<TResult extends Object?>({
+    required TResult Function(T? state) valid,
+    required TResult Function(E error, T? lastValidState) error,
   }) {
-    assert(valid != null);
-    assert(error != null);
     return valid(state);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result valid(T state),
-    Result error(T lastValidState, E error),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T? state)? valid,
+    TResult Function(E error, T? lastValidState)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (valid != null) {
       return valid(state);
     }
@@ -209,23 +165,20 @@ class _$_ValidState<E, T> implements _ValidState<E, T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result valid(_ValidState<E, T> value),
-    @required Result error(_ErrorState<E, T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ValidState<E, T> value) valid,
+    required TResult Function(_ErrorState<E, T> value) error,
   }) {
-    assert(valid != null);
-    assert(error != null);
     return valid(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result valid(_ValidState<E, T> value),
-    Result error(_ErrorState<E, T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ValidState<E, T> value)? valid,
+    TResult Function(_ErrorState<E, T> value)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (valid != null) {
       return valid(this);
     }
@@ -233,11 +186,14 @@ class _$_ValidState<E, T> implements _ValidState<E, T> {
   }
 }
 
-abstract class _ValidState<E, T> implements StateError<E, T> {
-  factory _ValidState(T state) = _$_ValidState<E, T>;
+abstract class _ValidState<E, T> extends StateError<E, T> {
+  factory _ValidState(T? state) = _$_ValidState<E, T>;
+  _ValidState._() : super._();
 
-  T get state;
-  _$ValidStateCopyWith<E, T, _ValidState<E, T>> get copyWith;
+  T? get state => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ValidStateCopyWith<E, T, _ValidState<E, T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -245,7 +201,7 @@ abstract class _$ErrorStateCopyWith<E, T, $Res> {
   factory _$ErrorStateCopyWith(
           _ErrorState<E, T> value, $Res Function(_ErrorState<E, T>) then) =
       __$ErrorStateCopyWithImpl<E, T, $Res>;
-  $Res call({T lastValidState, E error});
+  $Res call({E error, T? lastValidState});
 }
 
 /// @nodoc
@@ -261,146 +217,96 @@ class __$ErrorStateCopyWithImpl<E, T, $Res>
 
   @override
   $Res call({
-    Object lastValidState = freezed,
-    Object error = freezed,
+    Object? error = freezed,
+    Object? lastValidState = freezed,
   }) {
     return _then(_ErrorState<E, T>(
+      error: error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as E,
       lastValidState: lastValidState == freezed
           ? _value.lastValidState
-          : lastValidState as T,
-      error: error == freezed ? _value.error : error as E,
+          : lastValidState // ignore: cast_nullable_to_non_nullable
+              as T?,
     ));
   }
 }
 
 /// @nodoc
-class _$_ErrorState<E, T> implements _ErrorState<E, T> {
-  _$_ErrorState({this.lastValidState, this.error});
+class _$_ErrorState<E, T> extends _ErrorState<E, T> {
+  _$_ErrorState({required this.error, this.lastValidState}) : super._();
 
-  @override
-  final T lastValidState;
   @override
   final E error;
-
-  bool _didcurrent = false;
-  T _current;
-
   @override
-  T get current {
-    if (_didcurrent == false) {
-      _didcurrent = true;
-      _current = when(valid: (s) => s, error: (s, e) => s);
-    }
-    return _current;
-  }
-
-  bool _didhasError = false;
-  bool _hasError;
-
-  @override
-  bool get hasError {
-    if (_didhasError == false) {
-      _didhasError = true;
-      _hasError = this is _ErrorState;
-    }
-    return _hasError;
-  }
-
-  bool _diderrorOrNull = false;
-  E _errorOrNull;
-
-  @override
-  E get errorOrNull {
-    if (_diderrorOrNull == false) {
-      _diderrorOrNull = true;
-      _errorOrNull = when(valid: (s) => null, error: (s, e) => e);
-    }
-    return _errorOrNull;
-  }
-
-  bool _diderrorString = false;
-  String _errorString;
-
-  @override
-  String get errorString {
-    if (_diderrorString == false) {
-      _diderrorString = true;
-      _errorString =
-          when(valid: (s) => 'No Error', error: (s, e) => e.toString());
-    }
-    return _errorString;
-  }
+  final T? lastValidState;
 
   @override
   String toString() {
-    return 'StateError<$E, $T>.error(lastValidState: $lastValidState, error: $error, current: $current, hasError: $hasError, errorOrNull: $errorOrNull, errorString: $errorString)';
+    return 'StateError<$E, $T>.error(error: $error, lastValidState: $lastValidState)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ErrorState<E, T> &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)) &&
             (identical(other.lastValidState, lastValidState) ||
                 const DeepCollectionEquality()
-                    .equals(other.lastValidState, lastValidState)) &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)));
+                    .equals(other.lastValidState, lastValidState)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(lastValidState) ^
-      const DeepCollectionEquality().hash(error);
+      const DeepCollectionEquality().hash(error) ^
+      const DeepCollectionEquality().hash(lastValidState);
 
+  @JsonKey(ignore: true)
   @override
   _$ErrorStateCopyWith<E, T, _ErrorState<E, T>> get copyWith =>
       __$ErrorStateCopyWithImpl<E, T, _ErrorState<E, T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result valid(T state),
-    @required Result error(T lastValidState, E error),
+  TResult when<TResult extends Object?>({
+    required TResult Function(T? state) valid,
+    required TResult Function(E error, T? lastValidState) error,
   }) {
-    assert(valid != null);
-    assert(error != null);
-    return error(lastValidState, this.error);
+    return error(this.error, lastValidState);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result valid(T state),
-    Result error(T lastValidState, E error),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T? state)? valid,
+    TResult Function(E error, T? lastValidState)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
-      return error(lastValidState, this.error);
+      return error(this.error, lastValidState);
     }
     return orElse();
   }
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result valid(_ValidState<E, T> value),
-    @required Result error(_ErrorState<E, T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ValidState<E, T> value) valid,
+    required TResult Function(_ErrorState<E, T> value) error,
   }) {
-    assert(valid != null);
-    assert(error != null);
     return error(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result valid(_ValidState<E, T> value),
-    Result error(_ErrorState<E, T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ValidState<E, T> value)? valid,
+    TResult Function(_ErrorState<E, T> value)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this);
     }
@@ -408,10 +314,14 @@ class _$_ErrorState<E, T> implements _ErrorState<E, T> {
   }
 }
 
-abstract class _ErrorState<E, T> implements StateError<E, T> {
-  factory _ErrorState({T lastValidState, E error}) = _$_ErrorState<E, T>;
+abstract class _ErrorState<E, T> extends StateError<E, T> {
+  factory _ErrorState({required E error, T? lastValidState}) =
+      _$_ErrorState<E, T>;
+  _ErrorState._() : super._();
 
-  T get lastValidState;
-  E get error;
-  _$ErrorStateCopyWith<E, T, _ErrorState<E, T>> get copyWith;
+  E get error => throw _privateConstructorUsedError;
+  T? get lastValidState => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ErrorStateCopyWith<E, T, _ErrorState<E, T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }

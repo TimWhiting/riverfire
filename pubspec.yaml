@@ -4,26 +4,26 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   cloud_firestore: ^1.0.0
-  dartz: any
+  dartz: ^0.10.0-nullsafety.1
   firebase_auth: any
   firebase_core: any
   flutter:
     sdk: flutter
-  freezed_annotation: ^0.12.0
+  freezed_annotation: ^0.14.0
   google_sign_in: any
-  json_annotation: ^3.0.0
-  riverpod: ^0.12.0
+  json_annotation: ^4.0.0
+  riverpod: ^0.13.0
   rxdart: any
 
 dev_dependencies:
   abide: any
   build_runner: any
   derry: any
-  freezed: ^0.12.0
+  freezed: ^0.14.0
   json_serializable: any
   test: any
 

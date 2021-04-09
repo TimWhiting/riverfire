@@ -21,15 +21,15 @@ class RiverFireAuth {
   final GoogleSignIn signInWithGoogle;
   final FirebaseAuth _auth;
   FirebaseAuth get auth => _auth;
-  User user;
-  Stream<User> get authState => auth.authStateChanges();
+  User? user;
+  Stream<User?> get authState => auth.authStateChanges();
 
-  Future<User> signInAnonymously() async {
+  Future<User?> signInAnonymously() async {
     print('Signing in anonymously');
     try {
       final authResult = await auth.signInAnonymously();
       user = authResult.user;
-      print('signed in ${user.displayName} silently');
+      print('signed in ${user?.displayName} silently');
       return user;
     } on Exception catch (e, st) {
       print(e);
@@ -38,21 +38,21 @@ class RiverFireAuth {
     return user;
   }
 
-  Future<User> signIn() async {
+  Future<User?> signIn() async {
     print('Signing in');
     try {
       final googleUser = await signInWithGoogle.signInSilently();
       if (googleUser == null) {
         try {
           final googleUser = await signInWithGoogle.signIn();
-          final googleAuth = await googleUser.authentication;
+          final googleAuth = await googleUser!.authentication;
           final googleCredential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
           user = (await auth.signInWithCredential(googleCredential)).user;
-          print('signed in ${user.displayName}');
-          return user;
+          print('signed in ${user!.displayName}');
+          return user!;
         } on Exception catch (e, st) {
           print(e);
           print(st);
@@ -64,7 +64,7 @@ class RiverFireAuth {
           idToken: googleAuth.idToken,
         );
         user = (await auth.signInWithCredential(googleCredential)).user;
-        print('signed in ${user.displayName} silently');
+        print('signed in ${user?.displayName} silently');
         return user;
       }
     } on Exception catch (e, st) {

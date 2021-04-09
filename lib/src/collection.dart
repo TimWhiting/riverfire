@@ -279,7 +279,7 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     T Function(T) updateFunction, {
     bool updateIfNull = false,
   }) async {
-    if (state != null || updateIfNull) {
+    if (state.current != null || updateIfNull) {
       return (await _service.update(updateFunction(state.current!)))
           .map((r) => true);
     }
@@ -289,10 +289,12 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
 
 extension DocWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
-  StateNotifierProvider<RiverFirestoreDocWatcher<T>> docWatcher(
+  StateNotifierProvider<RiverFirestoreDocWatcher<T>,
+      StateError<FirestoreFailure, T?>> docWatcher(
           Provider<String> docIdProvider,
           {required T Function(Reader) initialState}) =>
-      StateNotifierProvider<RiverFirestoreDocWatcher<T>>(
+      StateNotifierProvider<RiverFirestoreDocWatcher<T>,
+          StateError<FirestoreFailure, T?>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
@@ -346,9 +348,11 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
 
 extension CollectionWatcher<T extends FirestoreDoc>
     on Provider<RiverFirestoreService<T>> {
-  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>>
-      collectionWatcher() =>
-          StateNotifierProvider<RiverFirestoreCollectionWatcher<T>>(
+  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>,
+          StateError<FirestoreFailure, List<T>>>
+      collectionWatcher() => StateNotifierProvider<
+              RiverFirestoreCollectionWatcher<T>,
+              StateError<FirestoreFailure, List<T>>>(
             (ref) => RiverFirestoreCollectionWatcher<T>(
               serviceProvider: this,
               read: ref.read,

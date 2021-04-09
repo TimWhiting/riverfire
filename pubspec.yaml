@@ -16,7 +16,7 @@ dependencies:
   freezed_annotation: ^0.14.0
   google_sign_in: any
   json_annotation: ^4.0.0
-  riverpod: ^0.13.0
+  riverpod: ^0.14.0
   rxdart: any
 
 dev_dependencies:

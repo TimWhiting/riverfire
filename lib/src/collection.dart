@@ -65,7 +65,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
             List.unmodifiable(snapshot.docs.map(_fromFirestore)),
           ),
         )
-        .onErrorReturnWith((e) {
+        .onErrorReturnWith((e, st) {
       if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
@@ -109,7 +109,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
             _fromFirestore(snapshot),
           ),
         )
-        .onErrorReturnWith((e) {
+        .onErrorReturnWith((e, st) {
       if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
@@ -132,7 +132,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
             _fromFirestore(snapshot),
           ),
         )
-        .onErrorReturnWith((e) {
+        .onErrorReturnWith((e, st) {
       if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {

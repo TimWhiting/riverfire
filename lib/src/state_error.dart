@@ -4,10 +4,8 @@ import 'package:riverpod/riverpod.dart';
 export 'package:dartz/dartz.dart' show Either, Unit;
 part 'state_error.freezed.dart';
 
-class StateNotifierWithErrorProvider<E, T>
-    extends StateNotifier<StateError<E, T>> {
-  StateNotifierWithErrorProvider(T initialState)
-      : super(StateError.valid(initialState));
+class StateNotifierWithErrorProvider<E, T> extends StateNotifier<StateError<E, T>> {
+  StateNotifierWithErrorProvider(T initialState) : super(StateError.valid(initialState));
 
   // ignore: avoid_setters_without_getters
   set nextState(Either<E, T> s) {
@@ -43,6 +41,5 @@ class StateError<E, T> with _$StateError<E, T> {
 
   late final E? errorOrNull = when(valid: (s) => null, error: (e, s) => e);
 
-  late final String errorString =
-      when(valid: (s) => 'No Error', error: (e, s) => e.toString());
+  late final String errorString = when(valid: (s) => 'No Error', error: (e, s) => e.toString());
 }

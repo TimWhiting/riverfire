@@ -1,40 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'app.dart';
 import 'state_error.dart';
+
 part 'collection.freezed.dart';
 part 'collection.g.dart';
 
 T identity<T>(T item) => item;
 Query defaultQuery(CollectionReference ref) => ref.limit(20);
 
-Provider<RiverFirestoreService<T>>
-    createRiverFirestoreService<T extends FirestoreDoc>(
+Provider<RiverFirestoreService<T>> createRiverFirestoreService<T extends FirestoreDoc>(
   FutureProvider<RiverFireConfig> config, {
-  required CollectionReference Function(Reader, FirebaseFirestore)
-      getCollection,
+  required CollectionReference Function(Reader, FirebaseFirestore) getCollection,
   required T Function(DocumentSnapshot) fromFirestore,
   required Query Function(CollectionReference) getQuery,
   T Function(T)? toFirestore,
 }) =>
-        Provider<RiverFirestoreService<T>>(
-          (ref) => RiverFirestoreService(
-            ref.read,
-            config,
-            (firestore) => getCollection(ref.read, firestore),
-            getQuery,
-            fromFirestore,
-            toFirestore,
-          ),
-        );
+    Provider<RiverFirestoreService<T>>(
+      (ref) => RiverFirestoreService(
+        ref.read,
+        config,
+        (firestore) => getCollection(ref.read, firestore),
+        getQuery,
+        fromFirestore,
+        toFirestore,
+      ),
+    );
 
 class RiverFirestoreService<T extends FirestoreDoc> {
-  RiverFirestoreService(this.read, this.config, this._getCollection,
-      this._getQuery, this._fromFirestore, T Function(T)? toFirestore)
+  RiverFirestoreService(
+      this.read, this.config, this._getCollection, this._getQuery, this._fromFirestore, T Function(T)? toFirestore)
       : _toFirestore = toFirestore ?? identity {
     _init();
   }
@@ -66,8 +66,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is FirebaseException &&
-          e.message?.contains('PERMISSION_DENIED') == true) {
+      if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
@@ -111,8 +110,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is FirebaseException &&
-          e.message?.contains('PERMISSION_DENIED') == true) {
+      if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
@@ -135,8 +133,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is FirebaseException &&
-          e.message?.contains('PERMISSION_DENIED') == true) {
+      if (e is FirebaseException && e.message?.contains('PERMISSION_DENIED') == true) {
         return left(FirestoreFailure.insufficientPermissions());
       } else {
         // log.error(e.toString());
@@ -150,9 +147,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       return left(FirestoreFailure.uninitialized());
     }
     try {
-      await _getCollection(_firestore!)
-          .doc(doc.id)
-          .set(_toFirestore(doc).toJson());
+      await _getCollection(_firestore!).doc(doc.id).set(_toFirestore(doc).toJson());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -169,9 +164,7 @@ class RiverFirestoreService<T extends FirestoreDoc> {
       return left(FirestoreFailure.uninitialized());
     }
     try {
-      await _getCollection(_firestore!)
-          .doc(doc.id)
-          .update(_toFirestore(doc).toJson());
+      await _getCollection(_firestore!).doc(doc.id).update(_toFirestore(doc).toJson());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -208,16 +201,13 @@ class RiverFirestoreService<T extends FirestoreDoc> {
 @freezed
 class FirestoreFailure with _$FirestoreFailure {
   FirestoreFailure._();
-  factory FirestoreFailure.insufficientPermissions() =
-      _FirestoreFailureInsufficientPermissions;
+  factory FirestoreFailure.insufficientPermissions() = _FirestoreFailureInsufficientPermissions;
   factory FirestoreFailure.unableToUpdate() = _FirestoreFailureUnableToUpdate;
   factory FirestoreFailure.unexpected(String e) = _FirestoreFailureUnexpected;
   factory FirestoreFailure.uninitialized() = _FirestoreFailureUninitialized;
-  factory FirestoreFailure.fromJson(Map<String, dynamic> json) =>
-      _$FirestoreFailureFromJson(json);
+  factory FirestoreFailure.fromJson(Map<String, dynamic> json) => _$FirestoreFailureFromJson(json);
 
-  late final bool insufficientPermissions =
-      this is _FirestoreFailureInsufficientPermissions;
+  late final bool insufficientPermissions = this is _FirestoreFailureInsufficientPermissions;
   late final bool unableToUpdate = this is _FirestoreFailureUnableToUpdate;
 
   late final bool unexpected = this is _FirestoreFailureUnexpected;
@@ -229,26 +219,23 @@ abstract class FirestoreDoc {
 }
 
 extension RiverFireServiceConfigX on FutureProvider<RiverFireConfig> {
-  Provider<RiverFirestoreService<T>>
-      riverFirestoreService<T extends FirestoreDoc>({
-    required CollectionReference Function(Reader, FirebaseFirestore)
-        getCollection,
+  Provider<RiverFirestoreService<T>> riverFirestoreService<T extends FirestoreDoc>({
+    required CollectionReference Function(Reader, FirebaseFirestore) getCollection,
     required T Function(DocumentSnapshot) fromFirestore,
     required Query Function(CollectionReference) getQuery,
     T Function(T)? toFirestore,
   }) =>
-          createRiverFirestoreService(
-            this,
-            getCollection: getCollection,
-            fromFirestore: fromFirestore,
-            getQuery: getQuery,
-            toFirestore: toFirestore,
-          );
+      createRiverFirestoreService(
+        this,
+        getCollection: getCollection,
+        fromFirestore: fromFirestore,
+        getQuery: getQuery,
+        toFirestore: toFirestore,
+      );
 }
 
 /// Watches a doc with [docId] for changes and exposes the state in a state notifier, also provides an interface for updating that doc
-class RiverFirestoreDocWatcher<T extends FirestoreDoc>
-    extends StateNotifierWithErrorProvider<FirestoreFailure, T?> {
+class RiverFirestoreDocWatcher<T extends FirestoreDoc> extends StateNotifierWithErrorProvider<FirestoreFailure, T?> {
   RiverFirestoreDocWatcher({
     required this.serviceProvider,
     required this.read,
@@ -280,21 +267,17 @@ class RiverFirestoreDocWatcher<T extends FirestoreDoc>
     bool updateIfNull = false,
   }) async {
     if (state.current != null || updateIfNull) {
-      return (await _service.update(updateFunction(state.current!)))
-          .map((r) => true);
+      return (await _service.update(updateFunction(state.current!))).map((r) => true);
     }
     return right<FirestoreFailure, bool>(false);
   }
 }
 
-extension DocWatcher<T extends FirestoreDoc>
-    on Provider<RiverFirestoreService<T>> {
-  StateNotifierProvider<RiverFirestoreDocWatcher<T>,
-      StateError<FirestoreFailure, T?>> docWatcher(
+extension DocWatcher<T extends FirestoreDoc> on Provider<RiverFirestoreService<T>> {
+  StateNotifierProvider<RiverFirestoreDocWatcher<T>, StateError<FirestoreFailure, T?>> docWatcher(
           Provider<String> docIdProvider,
           {required T Function(Reader) initialState}) =>
-      StateNotifierProvider<RiverFirestoreDocWatcher<T>,
-          StateError<FirestoreFailure, T?>>(
+      StateNotifierProvider<RiverFirestoreDocWatcher<T>, StateError<FirestoreFailure, T?>>(
         (ref) => RiverFirestoreDocWatcher<T>(
           serviceProvider: this,
           read: ref.read,
@@ -319,12 +302,9 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
   RiverFirestoreService<T> get _service => read(serviceProvider);
 
   /// Updates the doc with [id] with [updateFunction]
-  Future<Either<FirestoreFailure, bool>> update(
-      String id, T Function(T) updateFunction) async {
+  Future<Either<FirestoreFailure, bool>> update(String id, T Function(T) updateFunction) async {
     if (state.current != null && state.hasError) {
-      return (await _service.update(
-              updateFunction(state.current!.firstWhere((t) => t.id == id))))
-          .map((r) => true);
+      return (await _service.update(updateFunction(state.current!.firstWhere((t) => t.id == id)))).map((r) => true);
     }
     return right<FirestoreFailure, bool>(false);
   }
@@ -346,13 +326,10 @@ class RiverFirestoreCollectionWatcher<T extends FirestoreDoc>
   }
 }
 
-extension CollectionWatcher<T extends FirestoreDoc>
-    on Provider<RiverFirestoreService<T>> {
-  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>,
-          StateError<FirestoreFailure, List<T>>>
-      collectionWatcher() => StateNotifierProvider<
-              RiverFirestoreCollectionWatcher<T>,
-              StateError<FirestoreFailure, List<T>>>(
+extension CollectionWatcher<T extends FirestoreDoc> on Provider<RiverFirestoreService<T>> {
+  StateNotifierProvider<RiverFirestoreCollectionWatcher<T>, StateError<FirestoreFailure, List<T>>>
+      collectionWatcher() =>
+          StateNotifierProvider<RiverFirestoreCollectionWatcher<T>, StateError<FirestoreFailure, List<T>>>(
             (ref) => RiverFirestoreCollectionWatcher<T>(
               serviceProvider: this,
               read: ref.read,

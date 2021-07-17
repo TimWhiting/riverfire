@@ -3,11 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod/riverpod.dart';
 
-Provider<GoogleSignIn> createGoogleSignIn(GoogleSignIn signIn) =>
-    Provider((ref) => signIn);
+Provider<GoogleSignIn> createGoogleSignIn(GoogleSignIn signIn) => Provider((ref) => signIn);
 
-FutureProvider<RiverFireAuth> createRiverFireAuth(
-        FutureProvider<FirebaseApp> app, Provider<GoogleSignIn> signIn) =>
+FutureProvider<RiverFireAuth> createRiverFireAuth(FutureProvider<FirebaseApp> app, Provider<GoogleSignIn> signIn) =>
     FutureProvider<RiverFireAuth>((ref) async {
       final _app = await ref.read(app.future);
       final auth = FirebaseAuth.instanceFor(app: _app);
@@ -84,7 +82,6 @@ class RiverFireAuth {
 }
 
 extension RiverFireAppAuthX on FutureProvider<FirebaseApp> {
-  FutureProvider<RiverFireAuth> riverFireAuth(
-          Provider<GoogleSignIn> googleSignIn) =>
+  FutureProvider<RiverFireAuth> riverFireAuth(Provider<GoogleSignIn> googleSignIn) =>
       createRiverFireAuth(this, googleSignIn);
 }

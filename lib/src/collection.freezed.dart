@@ -20,8 +20,6 @@ FirestoreFailure _$FirestoreFailureFromJson(Map<String, dynamic> json) {
       return _FirestoreFailureUnableToUpdate.fromJson(json);
     case 'unexpected':
       return _FirestoreFailureUnexpected.fromJson(json);
-    case 'uninitialized':
-      return _FirestoreFailureUninitialized.fromJson(json);
 
     default:
       throw FallThroughError();
@@ -46,10 +44,6 @@ class _$FirestoreFailureTearOff {
     );
   }
 
-  _FirestoreFailureUninitialized uninitialized() {
-    return _FirestoreFailureUninitialized();
-  }
-
   FirestoreFailure fromJson(Map<String, Object> json) {
     return FirestoreFailure.fromJson(json);
   }
@@ -65,7 +59,6 @@ mixin _$FirestoreFailure {
     required TResult Function() insufficientPermissions,
     required TResult Function() unableToUpdate,
     required TResult Function(String e) unexpected,
-    required TResult Function() uninitialized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -73,7 +66,6 @@ mixin _$FirestoreFailure {
     TResult Function()? insufficientPermissions,
     TResult Function()? unableToUpdate,
     TResult Function(String e)? unexpected,
-    TResult Function()? uninitialized,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,8 +76,6 @@ mixin _$FirestoreFailure {
     required TResult Function(_FirestoreFailureUnableToUpdate value)
         unableToUpdate,
     required TResult Function(_FirestoreFailureUnexpected value) unexpected,
-    required TResult Function(_FirestoreFailureUninitialized value)
-        uninitialized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -94,7 +84,6 @@ mixin _$FirestoreFailure {
         insufficientPermissions,
     TResult Function(_FirestoreFailureUnableToUpdate value)? unableToUpdate,
     TResult Function(_FirestoreFailureUnexpected value)? unexpected,
-    TResult Function(_FirestoreFailureUninitialized value)? uninitialized,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -141,9 +130,8 @@ class __$FirestoreFailureInsufficientPermissionsCopyWithImpl<$Res>
       super._value as _FirestoreFailureInsufficientPermissions;
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_FirestoreFailureInsufficientPermissions
     extends _FirestoreFailureInsufficientPermissions {
   _$_FirestoreFailureInsufficientPermissions() : super._();
@@ -172,7 +160,6 @@ class _$_FirestoreFailureInsufficientPermissions
     required TResult Function() insufficientPermissions,
     required TResult Function() unableToUpdate,
     required TResult Function(String e) unexpected,
-    required TResult Function() uninitialized,
   }) {
     return insufficientPermissions();
   }
@@ -183,7 +170,6 @@ class _$_FirestoreFailureInsufficientPermissions
     TResult Function()? insufficientPermissions,
     TResult Function()? unableToUpdate,
     TResult Function(String e)? unexpected,
-    TResult Function()? uninitialized,
     required TResult orElse(),
   }) {
     if (insufficientPermissions != null) {
@@ -200,8 +186,6 @@ class _$_FirestoreFailureInsufficientPermissions
     required TResult Function(_FirestoreFailureUnableToUpdate value)
         unableToUpdate,
     required TResult Function(_FirestoreFailureUnexpected value) unexpected,
-    required TResult Function(_FirestoreFailureUninitialized value)
-        uninitialized,
   }) {
     return insufficientPermissions(this);
   }
@@ -213,7 +197,6 @@ class _$_FirestoreFailureInsufficientPermissions
         insufficientPermissions,
     TResult Function(_FirestoreFailureUnableToUpdate value)? unableToUpdate,
     TResult Function(_FirestoreFailureUnexpected value)? unexpected,
-    TResult Function(_FirestoreFailureUninitialized value)? uninitialized,
     required TResult orElse(),
   }) {
     if (insufficientPermissions != null) {
@@ -262,9 +245,8 @@ class __$FirestoreFailureUnableToUpdateCopyWithImpl<$Res>
       super._value as _FirestoreFailureUnableToUpdate;
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_FirestoreFailureUnableToUpdate
     extends _FirestoreFailureUnableToUpdate {
   _$_FirestoreFailureUnableToUpdate() : super._();
@@ -292,7 +274,6 @@ class _$_FirestoreFailureUnableToUpdate
     required TResult Function() insufficientPermissions,
     required TResult Function() unableToUpdate,
     required TResult Function(String e) unexpected,
-    required TResult Function() uninitialized,
   }) {
     return unableToUpdate();
   }
@@ -303,7 +284,6 @@ class _$_FirestoreFailureUnableToUpdate
     TResult Function()? insufficientPermissions,
     TResult Function()? unableToUpdate,
     TResult Function(String e)? unexpected,
-    TResult Function()? uninitialized,
     required TResult orElse(),
   }) {
     if (unableToUpdate != null) {
@@ -320,8 +300,6 @@ class _$_FirestoreFailureUnableToUpdate
     required TResult Function(_FirestoreFailureUnableToUpdate value)
         unableToUpdate,
     required TResult Function(_FirestoreFailureUnexpected value) unexpected,
-    required TResult Function(_FirestoreFailureUninitialized value)
-        uninitialized,
   }) {
     return unableToUpdate(this);
   }
@@ -333,7 +311,6 @@ class _$_FirestoreFailureUnableToUpdate
         insufficientPermissions,
     TResult Function(_FirestoreFailureUnableToUpdate value)? unableToUpdate,
     TResult Function(_FirestoreFailureUnexpected value)? unexpected,
-    TResult Function(_FirestoreFailureUninitialized value)? uninitialized,
     required TResult orElse(),
   }) {
     if (unableToUpdate != null) {
@@ -391,9 +368,8 @@ class __$FirestoreFailureUnexpectedCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_FirestoreFailureUnexpected extends _FirestoreFailureUnexpected {
   _$_FirestoreFailureUnexpected(this.e) : super._();
 
@@ -432,7 +408,6 @@ class _$_FirestoreFailureUnexpected extends _FirestoreFailureUnexpected {
     required TResult Function() insufficientPermissions,
     required TResult Function() unableToUpdate,
     required TResult Function(String e) unexpected,
-    required TResult Function() uninitialized,
   }) {
     return unexpected(e);
   }
@@ -443,7 +418,6 @@ class _$_FirestoreFailureUnexpected extends _FirestoreFailureUnexpected {
     TResult Function()? insufficientPermissions,
     TResult Function()? unableToUpdate,
     TResult Function(String e)? unexpected,
-    TResult Function()? uninitialized,
     required TResult orElse(),
   }) {
     if (unexpected != null) {
@@ -460,8 +434,6 @@ class _$_FirestoreFailureUnexpected extends _FirestoreFailureUnexpected {
     required TResult Function(_FirestoreFailureUnableToUpdate value)
         unableToUpdate,
     required TResult Function(_FirestoreFailureUnexpected value) unexpected,
-    required TResult Function(_FirestoreFailureUninitialized value)
-        uninitialized,
   }) {
     return unexpected(this);
   }
@@ -473,7 +445,6 @@ class _$_FirestoreFailureUnexpected extends _FirestoreFailureUnexpected {
         insufficientPermissions,
     TResult Function(_FirestoreFailureUnableToUpdate value)? unableToUpdate,
     TResult Function(_FirestoreFailureUnexpected value)? unexpected,
-    TResult Function(_FirestoreFailureUninitialized value)? uninitialized,
     required TResult orElse(),
   }) {
     if (unexpected != null) {
@@ -500,120 +471,4 @@ abstract class _FirestoreFailureUnexpected extends FirestoreFailure {
   @JsonKey(ignore: true)
   _$FirestoreFailureUnexpectedCopyWith<_FirestoreFailureUnexpected>
       get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$FirestoreFailureUninitializedCopyWith<$Res> {
-  factory _$FirestoreFailureUninitializedCopyWith(
-          _FirestoreFailureUninitialized value,
-          $Res Function(_FirestoreFailureUninitialized) then) =
-      __$FirestoreFailureUninitializedCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$FirestoreFailureUninitializedCopyWithImpl<$Res>
-    extends _$FirestoreFailureCopyWithImpl<$Res>
-    implements _$FirestoreFailureUninitializedCopyWith<$Res> {
-  __$FirestoreFailureUninitializedCopyWithImpl(
-      _FirestoreFailureUninitialized _value,
-      $Res Function(_FirestoreFailureUninitialized) _then)
-      : super(_value, (v) => _then(v as _FirestoreFailureUninitialized));
-
-  @override
-  _FirestoreFailureUninitialized get _value =>
-      super._value as _FirestoreFailureUninitialized;
-}
-
-@JsonSerializable()
-
-/// @nodoc
-class _$_FirestoreFailureUninitialized extends _FirestoreFailureUninitialized {
-  _$_FirestoreFailureUninitialized() : super._();
-
-  factory _$_FirestoreFailureUninitialized.fromJson(
-          Map<String, dynamic> json) =>
-      _$_$_FirestoreFailureUninitializedFromJson(json);
-
-  @override
-  String toString() {
-    return 'FirestoreFailure.uninitialized()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _FirestoreFailureUninitialized);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() insufficientPermissions,
-    required TResult Function() unableToUpdate,
-    required TResult Function(String e) unexpected,
-    required TResult Function() uninitialized,
-  }) {
-    return uninitialized();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? insufficientPermissions,
-    TResult Function()? unableToUpdate,
-    TResult Function(String e)? unexpected,
-    TResult Function()? uninitialized,
-    required TResult orElse(),
-  }) {
-    if (uninitialized != null) {
-      return uninitialized();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_FirestoreFailureInsufficientPermissions value)
-        insufficientPermissions,
-    required TResult Function(_FirestoreFailureUnableToUpdate value)
-        unableToUpdate,
-    required TResult Function(_FirestoreFailureUnexpected value) unexpected,
-    required TResult Function(_FirestoreFailureUninitialized value)
-        uninitialized,
-  }) {
-    return uninitialized(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_FirestoreFailureInsufficientPermissions value)?
-        insufficientPermissions,
-    TResult Function(_FirestoreFailureUnableToUpdate value)? unableToUpdate,
-    TResult Function(_FirestoreFailureUnexpected value)? unexpected,
-    TResult Function(_FirestoreFailureUninitialized value)? uninitialized,
-    required TResult orElse(),
-  }) {
-    if (uninitialized != null) {
-      return uninitialized(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_FirestoreFailureUninitializedToJson(this)
-      ..['runtimeType'] = 'uninitialized';
-  }
-}
-
-abstract class _FirestoreFailureUninitialized extends FirestoreFailure {
-  factory _FirestoreFailureUninitialized() = _$_FirestoreFailureUninitialized;
-  _FirestoreFailureUninitialized._() : super._();
-
-  factory _FirestoreFailureUninitialized.fromJson(Map<String, dynamic> json) =
-      _$_FirestoreFailureUninitialized.fromJson;
 }

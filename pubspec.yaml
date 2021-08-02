@@ -13,16 +13,14 @@ dependencies:
   firebase_core: any
   flutter:
     sdk: flutter
-  freezed_annotation: ^0.14.0
+  freezed_annotation: ^0.14.3
   google_sign_in: any
   json_annotation: ^4.0.0
   riverpod: ^1.0.0-dev.6
   rxdart: any
 
 dev_dependencies:
-  abide: any
-  build_runner: any
-  derry: any
+  build_runner: ^2.0.6
   freezed: ^0.14.0
   json_serializable: any
   test: any

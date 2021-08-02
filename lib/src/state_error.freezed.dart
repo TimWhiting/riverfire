@@ -113,6 +113,7 @@ class __$ValidStateCopyWithImpl<E, T, $Res>
 }
 
 /// @nodoc
+
 class _$_ValidState<E, T> extends _ValidState<E, T> {
   _$_ValidState(this.state) : super._();
 
@@ -234,6 +235,7 @@ class __$ErrorStateCopyWithImpl<E, T, $Res>
 }
 
 /// @nodoc
+
 class _$_ErrorState<E, T> extends _ErrorState<E, T> {
   _$_ErrorState({required this.error, this.lastValidState}) : super._();
 
